@@ -3,6 +3,7 @@
 - hosts: localhost
   vars:
     docker_container_cleanup:        true
+    # Disabling ansible_become in extra-vars and setting the path to test.yml are required if you override this value to change parameters.
     docker_container_command: >
       --extra-vars '{"ansible_become": false}'
       --skip-tags 'unit test full'
