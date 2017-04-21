@@ -1,0 +1,37 @@
+---
+
+- include: utils/users_home.yml
+  
+- name: Install per user pyenv
+  become: true
+  become_user: "{{ pyenv_user.username }}"
+  loop_control:
+    loop_var: pyenv_user
+  git:
+    accept_hostkey:   "{{ pyenv.accept_hostkey | default(omit) }}"
+    # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory
+    dest:             "{{ (pyenv_user.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.username] is not defined) | ternary(pyenv_user.pyenv_dest, [pyenv_users_home[pyenv_user.username], pyenv_user.pyenv_dest] | join('/')) }}"
+    executable:       "{{ pyenv.executable | default(omit) }}"
+    force:            "{{ pyenv.force | default(omit) }}"
+    key_file:         "{{ pyenv.key_file | default(omit) }}"
+    refspec:          "{{ pyenv.refspec | default(omit) }}"
+    remote:           "{{ pyenv.remote | default(omit) }}"
+    repo:             "{{ pyenv.repo }}"
+    ssh_opts:         "{{ pyenv.ssh_opts | default(omit) }}"
+    track_submodules: "{{ pyenv.track_submodules | default(omit) }}"
+    umask:            "{{ pyenv.umask | default(omit) }}"
+    update:           "{{ pyenv['update'] | default(omit) }}" # update is also a hash function so we need to index it instead
+    verify_commit:    "{{ pyenv.verify_commit | default(omit) }}"
+    version:          "{{ pyenv.version | default(omit) }}"
+  register: pyenv_pyenv_status
+  with_items: "{{ pyenv_users }}"
+  when: >
+    pyenv is mapping and
+    pyenv.repo is defined and
+    pyenv_users is iterable and
+    pyenv_user is mapping and
+    pyenv_user.pyenv_dest is defined and
+    pyenv_user.username is defined
+  tags:
+    - pyenv
+    - user

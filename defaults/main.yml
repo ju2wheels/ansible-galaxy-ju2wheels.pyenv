@@ -1,0 +1,300 @@
+---
+
+# pyenv GIT clone configuration (used for all users)
+pyenv:
+  force:   yes
+  repo:    'https://github.com/yyuu/pyenv.git'
+  umask:   '022'
+  update:  yes
+  version: master
+
+# Build dependencies that need to be installed in order to build Python environments.
+pyenv_build_dependencies:
+  Alpine:
+    package_manager:
+      update_cache: yes
+    packages:
+      - bash
+      - build-base
+      - bzip2
+      - bzip2-dev
+      - ca-certificates
+      - coreutils
+      - curl
+      - gdbm-dev
+      - linux-headers
+      - llvm
+      - ncurses-dev
+      - openssl-dev
+      - readline-dev
+      - sqlite-dev
+      - tar
+      - tk-dev
+      - wget
+      - xz
+      - xz-dev
+      - zlib-dev
+  # Amazon does not have tk-devel packages available so any Python builds on it will not have tk support built in
+  Amazon:
+    package_manager:
+      update_cache: yes
+    packages:
+      - autoconf
+      - automake
+      - bzip2
+      - bzip2-devel
+      - ca-certificates
+      - curl
+      - gcc
+      - gcc-c++
+      - gdbm-devel
+      - kernel-headers
+      - make
+      - ncurses-devel
+      - openssl-devel
+      - pkgconfig
+      - readline-devel
+      - sqlite-devel
+      - tar
+      - wget
+      - xz
+      - xz-devel
+      - zlib-devel    
+  Debian:
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - automake
+      - build-essential
+      - bzip2
+      - ca-certificates
+      - curl
+      - libbz2-dev
+      - libgdbm-dev
+      - liblzma-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - "linux-headers-{{ hostvars[inventory_hostname].ansible_kernel if not (hostvars[inventory_hostname].ansible_virtualization_role == 'guest' and hostvars[inventory_hostname].ansible_virtualization_type == 'docker') else 'amd64' }}"
+      - llvm
+      - pkg-config
+      - tar
+      - tk-dev
+      - wget
+      - xz-utils
+      - zlib1g-dev
+  CentOS: &el_build_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - autoconf
+      - automake
+      - bzip2
+      - bzip2-devel
+      - ca-certificates
+      - curl
+      - gcc
+      - gcc-c++
+      - gdbm-devel
+      - kernel-headers
+      - make
+      - ncurses-devel
+      - openssl-devel
+      - pkgconfig
+      - readline-devel
+      - sqlite-devel
+      - tar
+      - tk-devel
+      - wget
+      - xz
+      - xz-devel
+      - zlib-devel
+  Fedora: *el_build_deps
+  openSUSE: &opensuse_build_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - autoconf
+      - automake
+      - bzip2
+      - ca-certificates-cacert
+      - ca-certificates-mozilla
+      - curl
+      - gcc
+      - gcc-c++
+      - gdbm-devel
+      - kernel-devel
+      - libbz2-devel
+      - libncurses5
+      - libopenssl-devel
+      - make
+      - ncurses-devel
+      - pkg-config
+      - readline-devel
+      - sqlite3-devel
+      - tar
+      - tk-devel
+      - wget
+      - xz
+      - xz-devel
+      - zlib-devel
+  openSUSE Leap: *opensuse_build_deps
+  OracleLinux: *el_build_deps
+  RedHat: *el_build_deps
+  Scientific: *el_build_deps
+  Ubuntu: &ubuntu_build_deps
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - automake
+      - build-essential
+      - bzip2
+      - ca-certificates
+      - curl
+      - libbz2-dev
+      - libgdbm-dev
+      - liblzma-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - "linux-headers-{{ hostvars[inventory_hostname].ansible_kernel if not (hostvars[inventory_hostname].ansible_virtualization_role == 'guest' and hostvars[inventory_hostname].ansible_virtualization_type == 'docker') else 'generic' }}"
+      - llvm
+      - pkg-config
+      - tar
+      - tk-dev
+      - wget
+      - xz-utils
+      - zlib1g-dev
+  Linuxmint: *ubuntu_build_deps
+
+# GIT dependencies that need to be installed in order to clone and install pyenv.
+pyenv_git_dependencies:
+  Alpine:
+    package_manager:
+      update_cache: yes
+    packages:
+      - git
+  Amazon:
+    package_manager:
+      update_cache: yes
+    packages:
+      - git    
+  Debian: &debian_git_deps
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - git
+  CentOS: &el_git_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - git
+  Fedora: *el_git_deps
+  Linuxmint: *debian_git_deps
+  openSUSE: &opensuse_git_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - git
+  openSUSE Leap: *opensuse_git_deps
+  OracleLinux: *el_git_deps
+  RedHat: *el_git_deps
+  Scientific: *el_git_deps
+  Ubuntu: *debian_git_deps
+
+# Repositories by distribution/os family, with key being unique repositories description and value the arguments to apt_repository, yum_repository, etc.
+pyenv_repositories:
+  Amazon:
+    # Repo description and arguments to pass on to yum_repository to manage the repo configuration
+    epel:
+      description:    "Extra Packages for Enterprise Linux 6 - $basearch"
+      enabled:        yes
+      failovermethod: priority
+      file:           epel
+      gpgcheck:       yes
+      gpgkey:         'https://getfedora.org/static/0608B895.txt'
+      name:           epel
+      mirrorlist:     "https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch"
+  CentOS:
+    # Repo description and arguments to pass on to yum_repository to manage the repo configuration
+    epel: &el_epel_repo
+      description:    "Extra Packages for Enterprise Linux {{ hostvars[inventory_hostname].ansible_distribution_major_version }} - $basearch"
+      enabled:        yes
+      failovermethod: priority
+      file:           epel
+      gpgcheck:       yes
+      gpgkey:         "{{ 'https://getfedora.org/static/0608B895.txt' if hostvars[inventory_hostname].ansible_distribution_major_version == '6' else 'https://getfedora.org/static/217521F6.txt' }}"
+      name:           epel
+      mirrorlist:     "https://mirrors.fedoraproject.org/metalink?repo=epel-{{ hostvars[inventory_hostname].ansible_distribution_major_version }}&arch=$basearch"
+  Linuxmint:
+    # Repo decription and arguments to pass on to apt_repository to manage the repo
+    git:
+      repo: "deb http://ppa.launchpad.net/git-core/ppa/ubuntu {{ 'trusty' if hostvars[inventory_hostname].ansible_distribution_major_version == '17' else 'xenial' }} main"
+  OracleLinux:
+    epel: *el_epel_repo
+  RedHat:
+    epel: *el_epel_repo
+  Scientific:
+    epel: *el_epel_repo
+  Ubuntu:
+    # Repo decription and arguments to pass on to apt_repository to manage the repo
+    git:
+      repo: 'ppa:git-core/ppa'
+
+# Repository keys to configure by distribution/os family
+pyenv_repository_keys:
+  Amazon:
+    epel:
+      key: 'https://getfedora.org/static/0608B895.txt'
+  CentOS:
+    epel: &el_epel_key
+      key: "{{ 'https://getfedora.org/static/0608B895.txt' if hostvars[inventory_hostname].ansible_distribution_major_version == '6' else 'https://getfedora.org/static/217521F6.txt' }}"
+  Linuxmint:
+    git:
+      id:        E1DF1F24
+      keyserver: keyserver.ubuntu.com
+  OracleLinux:
+    epel: *el_epel_key
+  RedHat:
+    epel: *el_epel_key
+  Scientific:
+    epel: *el_epel_key
+
+# Per user pyenv installation, installed Python versions, plugins, virtualenvs,and shell environment autoloading configuration
+pyenv_users:
+  - username: "{{ hostvars[inventory_hostname].ansible_env.USER }}"
+    plugins:
+      - pyenv-virtualenv
+    # If the destination paths are relative, they are converted to be relative to the user's HOME directory
+    pyenv_dest: '.pyenv'
+    # Shell environment autoloading configuration for blockinfile module
+    shell_rc_file_block_properties:
+      backup: yes
+      create: yes
+      follow: yes
+    # If the destination paths are relative, they are converted to be relative to the user's HOME directory
+    shell_rc_files:
+      - '.bashrc'
+    python_versions:
+      - 2.7.13
+      - 3.6.0
+    virtualenvs:
+      - name: venv-2.7.13
+        python_version: 2.7.13
+      - name: venv-3.6.0
+        python_version: 3.6.0
+
+# pyenv-virtualenv GIT clone configuration (used for all users)
+pyenv_virtualenv:
+  force:   yes
+  repo:    'https://github.com/yyuu/pyenv-virtualenv.git'
+  umask:   '022'
+  update:  yes
+  version: master

@@ -1,0 +1,28 @@
+---
+
+- name: Manage pyenv git dependencies
+  become: true
+  loop_control:
+    loop_var: pyenv_git_dependency
+  yum:
+    conf_file:         "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.conf_file | default(omit) }}"
+    disable_gpg_check: "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.disable_gpg_check | default(omit) }}"
+    disablerepo:       "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.disablerepo | default(omit) }}"
+    enablerepo:        "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.enablerepo | default(omit) }}"
+    name:              "{{ pyenv_git_dependency }}"
+    skip_broken:       "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.skip_broken | default(omit) }}"
+    state:             "{{ pyenv_git_dependencies_state }}"
+    update_cache:      "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.update_cache | default(omit) }}"
+    validate_certs:    "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.validate_certs | default(omit) }}"
+  register: pyenv_git_dependencies_status
+  with_items: "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].packages }}"
+  when: >
+    hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Fedora', 'OracleLinux', 'RedHat', 'Scientific'] and
+    pyenv_git_dependencies is mapping and
+    pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution] is mapping and
+    pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager is mapping and
+    pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].packages is iterable and
+    pyenv_git_dependencies_state is defined
+  tags:
+    - dependencies
+    - git

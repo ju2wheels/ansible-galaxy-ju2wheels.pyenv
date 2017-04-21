@@ -1,0 +1,34 @@
+---
+
+- include: utils/users_home.yml
+
+- name: Install per user pyenv virtualenvs
+  become: true
+  become_user: "{{ pyenv_user.0.username }}"
+  loop_control:
+    loop_var: pyenv_user
+  # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory
+  command: "{{ (pyenv_user.0.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.0.pyenv_dest, [pyenv_users_home[pyenv_user.0.username], pyenv_user.0.pyenv_dest] | join('/')) }}/bin/pyenv virtualenv {{ pyenv_user.1.python_version }} {{ pyenv_user.1.name }}"
+  args:
+    creates: "{{ (pyenv_user.0.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.0.pyenv_dest, [pyenv_users_home[pyenv_user.0.username], pyenv_user.0.pyenv_dest] | join('/')) }}/versions/{{ pyenv_user.1.name }}/bin/python"
+  environment:
+    PYENV_ROOT: "{{ (pyenv_user.0.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.0.pyenv_dest, [pyenv_users_home[pyenv_user.0.username], pyenv_user.0.pyenv_dest] | join('/')) }}"
+  register: pyenv_virtualenvs_status
+  with_subelements:
+    - "{{ pyenv_users }}"
+    - virtualenvs
+  when: >
+    pyenv_users is iterable and
+    pyenv_user is iterable and
+    pyenv_user.0 is mapping and
+    pyenv_user.0.plugins is iterable and
+    pyenv_user.0.pyenv_dest is defined and
+    pyenv_user.0.username is defined and
+    pyenv_user.1 is mapping and
+    pyenv_user.1.name is defined and
+    pyenv_user.1.python_version is defined and
+    'pyenv-virtualenv' in pyenv_user.0.plugins
+  tags:
+    - pyenv-virtualenv
+    - python
+    - user

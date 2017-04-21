@@ -1,0 +1,29 @@
+---
+
+- name: Manage pyenv git dependencies
+  become: true
+  loop_control:
+    loop_var: pyenv_git_dependency
+  apt:
+    allow_unauthenticated: "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.allow_unauthenticated | default(omit) }}"
+    cache_valid_time:      "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.cache_valid_time | default(omit) }}"
+    default_release:       "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.default_release | default(omit) }}"
+    force:                 "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.force | default(omit) }}"
+    install_recommends:    "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.install_recommends | default(omit) }}"
+    name:                  "{{ pyenv_git_dependency }}"
+    only_upgrade:          "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.only_upgrade | default(omit) }}"
+    purge:                 "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.purge | default(omit) }}"
+    state:                 "{{ pyenv_git_dependencies_state }}"
+    update_cache:          "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.update_cache | default(omit) }}"
+  register: pyenv_git_dependencies_status
+  with_items: "{{ pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].packages }}"
+  when: >
+    hostvars[inventory_hostname].ansible_os_family in ['Debian', 'Linuxmint'] and
+    pyenv_git_dependencies is mapping and
+    pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution] is mapping and
+    pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager is mapping and
+    pyenv_git_dependencies[hostvars[inventory_hostname].ansible_distribution].packages is iterable and
+    pyenv_git_dependencies_state is defined
+  tags:
+    - dependencies
+    - git

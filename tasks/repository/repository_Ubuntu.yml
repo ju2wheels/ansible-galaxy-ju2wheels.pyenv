@@ -1,0 +1,45 @@
+---
+
+- name: Manage the GIT repository
+  become: true
+  apt_repository:
+    codename:       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git.codename | default(omit) }}"
+    filename:       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git.filename | default('git-core-' ~ (pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git.codename | default('ubuntu')) ~ '-ppa-' ~ hostvars[inventory_hostname].ansible_distribution_release) }}"
+    mode:           '0644'
+    repo:           "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git.repo }}"
+    state:          "{{ pyenv_repositories_git_state }}"
+    update_cache:   "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git.update_cache | default(omit) }}"
+    validate_certs: "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git.validate_certs | default(omit) }}"
+  register: pyenv_repository_status
+  when: >
+    hostvars[inventory_hostname].ansible_distribution in ['Linuxmint', 'Ubuntu'] and
+    pyenv_repositories is mapping and
+    pyenv_repositories[hostvars[inventory_hostname].ansible_distribution] is mapping and
+    pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git is mapping and
+    pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].git.repo is defined and
+    pyenv_repositories_git_state is defined
+  tags:
+    - git
+    - repository
+
+- name: Manage the GIT repository key
+  become: true
+  apt_key:
+    data:           "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git.data | default(omit) }}"
+    file:           "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git.file | default(omit) }}"
+    id:             "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git.id | default(omit) }}"
+    keyring:        "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git.keyring | default(omit) }}"
+    keyserver:      "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git.keyserver | default(omit) }}"
+    state:          "{{ pyenv_repositories_git_state }}"
+    url:            "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git.url | default(omit) }}"
+    validate_certs: "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git.validate_certs | default(omit) }}"
+  register: pyenv_repository_key_status
+  when: >
+    hostvars[inventory_hostname].ansible_distribution in ['Linuxmint', 'Ubuntu'] and
+    pyenv_repositories_git_state is defined and
+    pyenv_repository_keys is mapping and
+    pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution] is mapping and
+    pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].git is mapping
+  tags:
+    - git
+    - repository

@@ -1,0 +1,39 @@
+---
+
+- include: utils/users_home.yml
+
+- name: Install per user pyenv-virtualenv module
+  become: true
+  become_user: "{{ pyenv_user.username }}"
+  loop_control:
+    loop_var: pyenv_user
+  git:
+    accept_hostkey:   "{{ pyenv_virtualenv.accept_hostkey | default(omit) }}"
+    # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory
+    dest:             "{{ (pyenv_user.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.username] is not defined) | ternary(pyenv_user.pyenv_dest, [pyenv_users_home[pyenv_user.username], pyenv_user.pyenv_dest] | join('/')) }}/plugins/pyenv-virtualenv"
+    executable:       "{{ pyenv_virtualenv.executable | default(omit) }}"
+    force:            "{{ pyenv_virtualenv.force | default(omit) }}"
+    key_file:         "{{ pyenv_virtualenv.key_file | default(omit) }}"
+    refspec:          "{{ pyenv_virtualenv.refspec | default(omit) }}"
+    remote:           "{{ pyenv_virtualenv.remote | default(omit) }}"
+    repo:             "{{ pyenv_virtualenv.repo }}"
+    ssh_opts:         "{{ pyenv_virtualenv.ssh_opts | default(omit) }}"
+    track_submodules: "{{ pyenv_virtualenv.track_submodules | default(omit) }}"
+    umask:            "{{ pyenv_virtualenv.umask | default(omit) }}"
+    update:           "{{ pyenv_virtualenv['update'] | default(omit) }}" # update is also a hash function so we need to index it instead
+    verify_commit:    "{{ pyenv_virtualenv.verify_commit | default(omit) }}"
+    version:          "{{ pyenv_virtualenv.version | default(omit) }}"
+  register: pyenv_virtualenv_status
+  with_items: "{{ pyenv_users }}"
+  when: >
+    pyenv_users is iterable and
+    pyenv_user is mapping and
+    pyenv_user.plugins is iterable and
+    pyenv_user.pyenv_dest is defined and
+    pyenv_user.username is defined and
+    pyenv_virtualenv is mapping and
+    pyenv_virtualenv.repo is defined and
+    'pyenv-virtualenv' in pyenv_user.plugins
+  tags:
+    - pyenv-virtualenv
+    - user

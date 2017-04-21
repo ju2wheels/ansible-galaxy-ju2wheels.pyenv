@@ -1,0 +1,11 @@
+---
+
+# Install pyenv build dependencies
+- loop_control:
+    loop_var: pyenv_build_dependencies_include
+  vars:
+    pyenv_build_dependencies_state: present
+  include: "{{ pyenv_build_dependencies_include }}"
+  with_first_found:
+    - "build_dependencies/build_dependencies_{{ hostvars[inventory_hostname].ansible_distribution }}.yml"
+    - "build_dependencies/build_dependencies_{{ hostvars[inventory_hostname].ansible_os_family }}.yml"

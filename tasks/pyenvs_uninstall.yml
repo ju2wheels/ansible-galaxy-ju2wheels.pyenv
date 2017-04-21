@@ -1,0 +1,29 @@
+---
+
+- include: utils/users_home.yml
+  
+- name: Uninstall per user Python environments
+  become: true
+  become_user: "{{ pyenv_user.0.username }}"
+  loop_control:
+    loop_var: pyenv_user
+  # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory  
+  command: "{{ (pyenv_user.0.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.0.pyenv_dest, [pyenv_users_home[pyenv_user.0.username], pyenv_user.0.pyenv_dest] | join('/')) }}/bin/pyenv uninstall -f {{ pyenv_user.1 }}"
+  args:
+    removes: "{{ (pyenv_user.0.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.0.pyenv_dest, [pyenv_users_home[pyenv_user.0.username], pyenv_user.0.pyenv_dest] | join('/')) }}/versions/{{ pyenv_user.1 }}"
+  environment:
+    PYENV_ROOT: "{{ (pyenv_user.0.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.0.pyenv_dest, [pyenv_users_home[pyenv_user.0.username], pyenv_user.0.pyenv_dest] | join('/')) }}"
+  register: pyenv_pyenvs_status
+  with_subelements:
+    - "{{ pyenv_users }}"
+    - python_versions
+  when: >
+    pyenv_users is iterable and
+    pyenv_user is iterable and
+    pyenv_user.0 is mapping and
+    pyenv_user.0.pyenv_dest is defined and
+    pyenv_user.0.username is defined
+  tags:
+    - pyenv-virtualenv
+    - python
+    - user

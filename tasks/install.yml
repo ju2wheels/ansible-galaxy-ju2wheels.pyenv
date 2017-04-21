@@ -1,0 +1,25 @@
+---
+
+# Configure any necessary repositories used to install recent version of GIT
+- include: repository_install.yml
+  
+# Install pyenv build dependencies
+- include: build_dependencies_install.yml
+  
+# Install pyenv git dependencies
+- include: git_dependencies_install.yml
+
+# Install per user pyenv
+- include: pyenv_install.yml
+
+# Install per user pyenv-virtualenv module
+- include: pyenv_virtualenv_install.yml
+
+# Install per user Python environments
+- include: pyenvs_install.yml
+
+# Install per user Python virtualenvs
+- include: pyenv_virtualenvs_install.yml
+
+# Install per user shell environment configuration to autoload pyenv
+- include: pyenv_shell_env_install.yml

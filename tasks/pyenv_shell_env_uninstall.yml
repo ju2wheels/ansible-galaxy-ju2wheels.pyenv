@@ -1,0 +1,6 @@
+---
+
+# Remove per user shell environment configuration to autoload pyenv
+- vars:
+    pyenv_shell_env_state: absent
+  include: pyenv/pyenv_shell_env.yml

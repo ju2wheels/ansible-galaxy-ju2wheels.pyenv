@@ -1,0 +1,94 @@
+---
+
+# We purposely dont install epel-release RPM since none of the pyenv dependencies directly require it
+
+- name: Manage the EL EPEL repository
+  become: true
+  yum_repository:
+    async:                        "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.async | default(omit) }}"
+    attributes:                   "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.attributes | default(omit) }}"
+    bandwidth:                    "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.bandwidth | default(omit) }}"
+    baseurl:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.baseurl | default(omit) }}"
+    cost:                         "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.cost | default(omit) }}"
+    deltarpm_metadata_percentage: "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.deltarpm_metadata_percentage | default(omit) }}"
+    deltarpm_percentage:          "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.deltarpm_percentage | default(omit) }}"
+    description:                  "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.description | default(omit) }}"
+    enabled:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.enabled | default(omit) }}"
+    enablegroups:                 "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.enablegroups | default(omit) }}"
+    exclude:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.exclude | default(omit) }}"
+    failovermethod:               "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.failovermethod | default(omit) }}"
+    file:                         "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.file | default(omit) }}"
+    gpgcakey:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.gpgcakey | default(omit) }}"
+    gpgcheck:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.gpgcheck | default(omit) }}"
+    gpgkey:                       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.gpgkey | default(omit) }}"
+    group:                        "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.group | default(omit) }}"
+    http_caching:                 "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.http_caching | default(omit) }}"
+    include:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.include | default(omit) }}"
+    includepkgs:                  "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.includepkgs | default(omit) }}"
+    ip_resolve:                   "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.ip_resolve | default(omit) }}"
+    keepalive:                    "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.keepalive | default(omit) }}"
+    keepcache:                    "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.keepcache | default(omit) }}"
+    metadata_expire:              "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.metadata_expire | default(omit) }}"
+    metadata_expire_filter:       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.metadata_expire_filter | default(omit) }}"
+    metalink:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.metalink | default(omit) }}"
+    mirrorlist:                   "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.mirrorlist | default(omit) }}"
+    mirrorlist_expire:            "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.mirrorlist_expire | default(omit) }}"
+    mode:                         "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.mode | default(omit) }}"
+    name:                         "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.name }}"
+    owner:                        "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.owner | default(omit) }}"
+    params:                       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.params | default(omit) }}"
+    password:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.password | default(omit) }}"
+    priority:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.priority | default(omit) }}"
+    protect:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.protect | default(omit) }}"
+    proxy:                        "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.proxy | default(omit) }}"
+    proxy_password:               "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.proxy_password | default(omit) }}"
+    proxy_username:               "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.proxy_username | default(omit) }}"
+    repo_gpgcheck:                "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.repo_gpgcheck | default(omit) }}"
+    reposdir:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.reposdir | default(omit) }}"
+    retries:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.retries | default(omit) }}"
+    s3_enabled:                   "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.s3_enabled | default(omit) }}"
+    selevel:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.selevel | default(omit) }}"
+    serole:                       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.serole | default(omit) }}"
+    setype:                       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.setype | default(omit) }}"
+    seuser:                       "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.seuser | default(omit) }}"
+    skip_if_unavailable:          "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.skip_if_unavailable | default(omit) }}"
+    ssl_check_cert_permissions:   "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.ssl_check_cert_permissions | default(omit) }}"
+    sslcacert:                    "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.sslcacert | default(omit) }}"
+    sslclientcert:                "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.sslclientcert | default(omit) }}"
+    sslclientkey:                 "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.sslclientkey | default(omit) }}"
+    sslverify:                    "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.sslverify | default(omit) }}"
+    state:                        "{{ pyenv_repositories_epel_state }}"
+    throttle:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.throttle | default(omit) }}"
+    timeout:                      "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.timeout | default(omit) }}"
+    ui_repoid_vars:               "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.ui_repoid_vers | default(omit) }}"
+    unsafe_writes:                "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.unsafe_writes | default(omit) }}"
+    username:                     "{{ pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.username | default(omit) }}"
+  register: pyenv_repository_status
+  when: >
+    hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'OracleLinux', 'RedHat', 'Scientific'] and
+    pyenv_repositories is mapping and
+    pyenv_repositories[hostvars[inventory_hostname].ansible_distribution] is mapping and
+    pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel is mapping and
+    pyenv_repositories[hostvars[inventory_hostname].ansible_distribution].epel.name is defined and
+    pyenv_repositories_epel_state is defined
+  tags:
+    - epel
+    - repository
+
+- name: Manage EL EPEL repository GPG key
+  become: true
+  rpm_key:
+    key:            "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].epel.key }}"
+    state:          "{{ pyenv_repositories_epel_state }}"
+    validate_certs: "{{ pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].epel.validate_certs | default(omit) }}"
+  register: pyenv_repository_key_status
+  when: >
+    hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'OracleLinux', 'RedHat', 'Scientific'] and
+    pyenv_repository_keys is mapping and
+    pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution] is mapping and
+    pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].epel is mapping and
+    pyenv_repository_keys[hostvars[inventory_hostname].ansible_distribution].epel.key is defined and
+    pyenv_repositories_epel_state is defined
+  tags:
+    - epel
+    - repository

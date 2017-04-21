@@ -1,0 +1,33 @@
+---
+
+- name: "Determine each user's HOME directory"
+  become: true
+  become_user: "{{ pyenv_user.username }}"
+  loop_control:
+    loop_var: pyenv_user
+  register: pyenv_users_home_check
+  shell: "getent passwd {{ pyenv_user.username | quote }} | cut -d':' -f6"
+  with_items: "{{ pyenv_users }}"
+  when: >
+    pyenv_users is iterable and
+    pyenv_user is mapping and
+    pyenv_user.username is defined
+  tags:
+    - pyenv
+    - user
+    - home
+
+- name: Create the pyenv_users_home object
+  set_fact:
+    pyenv_users_home: {}
+
+- name: "Update each user's HOME directory in pyenv_users_home"
+  loop_control:
+    loop_var: pyenv_user_home
+  set_fact:
+    pyenv_users_home: "{{ pyenv_users_home | combine({pyenv_user_home.pyenv_user.username: pyenv_user_home.stdout}) }}"
+  with_items: "{{ pyenv_users_home_check.results }}"
+  when: >
+    pyenv_users_home_check is mapping and
+    pyenv_users_home_check.results is iterable and
+    pyenv_user_home.stdout != ''

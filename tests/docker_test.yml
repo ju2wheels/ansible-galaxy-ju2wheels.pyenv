@@ -1,0 +1,126 @@
+---
+
+- hosts: localhost
+  vars:
+    docker_container_cleanup:        true
+    docker_container_command: >
+      --extra-vars '{"ansible_become": false}'
+      --skip-tags 'unit test full'
+      -vvv
+      /ansible-playbook/tests/test.yml
+    docker_container_entrypoint:     ansible-playbook
+    docker_container_env:
+      ANSIBLE_CONFIG:    /ansible-playbook/tests/ansible.cfg
+      ANSIBLE_INVENTORY: /ansible-playbook/tests/inventory
+      ANSIBLE_NOCOLOR:   1
+    docker_container_hostname:       ju2wheels_pyenv_test
+    docker_container_images:
+      - ju2wheels/ansible:2.x-alpine-3.3
+      - ju2wheels/ansible:2.x-alpine-3.4     
+      - ju2wheels/ansible:2.x-alpine-3.5
+      - ju2wheels/ansible:2.x-amazonlinux-2016.09
+      - ju2wheels/ansible:2.x-amazonlinux-2017.03
+      - ju2wheels/ansible:2.x-centos-6
+      - ju2wheels/ansible:2.x-centos-7
+      - ju2wheels/ansible:2.x-debian-7
+      - ju2wheels/ansible:2.x-debian-8
+      - ju2wheels/ansible:2.x-debian-9
+      - ju2wheels/ansible:2.x-fedora-20
+      - ju2wheels/ansible:2.x-fedora-21
+      - ju2wheels/ansible:2.x-fedora-22
+      - ju2wheels/ansible:2.x-fedora-23
+      - ju2wheels/ansible:2.x-fedora-24
+      - ju2wheels/ansible:2.x-fedora-25
+      - ju2wheels/ansible:2.x-linuxmint-18
+      - ju2wheels/ansible:2.x-opensuse-13.2
+      - ju2wheels/ansible:2.x-opensuse-42.1
+      - ju2wheels/ansible:2.x-opensuse-42.2
+      - ju2wheels/ansible:2.x-ubuntu-12.04
+      - ju2wheels/ansible:2.x-ubuntu-14.04
+      - ju2wheels/ansible:2.x-ubuntu-16.04
+    docker_container_interactive:    true
+    docker_container_name:           ju2wheels_pyenv_test
+    docker_container_pull:           true
+    docker_container_recreate:       true
+    docker_container_restart_policy: false
+    docker_container_volumes:
+      - "{{ playbook_dir }}/../:/ansible-playbook"
+  tasks:
+    - name: ju2wheels.pyenv dockerized unit test
+      loop_control:
+        loop_var: docker_image
+      docker_container:
+        api_version:         "{{ docker_container_api_version | default(omit) }}"
+        blkio_weight:        "{{ docker_container_blkio_weight | default(omit) }}"
+        cacert_path:         "{{ docker_container_cacert_path | default(omit) }}"
+        capabilities:        "{{ docker_container_capabilities | default(omit) }}"
+        cert_path:           "{{ docker_container_cert_path | default(omit) }}"
+        cleanup:             "{{ docker_container_cleanup | default(omit) }}"
+        command:             "{{ docker_container_command | default(omit) }}"
+        cpu_period:          "{{ docker_container_cpu_period | default(omit) }}"
+        cpu_quota:           "{{ docker_container_cpu_quota | default(omit) }}"
+        cpu_shares:          "{{ docker_container_cpu_shares | default(omit) }}"
+        cpuset_cpus:         "{{ docker_container_cpuset_cpus | default(omit) }}"
+        cpuset_mems:         "{{ docker_container_cpuset_mems | default(omit) }}"
+        detach:              false
+        devices:             "{{ docker_container_devices | default(omit) }}"
+        dns_search_domains:  "{{ docker_container_dns_search_domains | default(omit) }}"
+        dns_servers:         "{{ docker_container_dns_servers | default(omit) }}"
+        docker_host:         "{{ docker_container_host | default(omit) }}"
+        entrypoint:          "{{ docker_container_entrypoint | default(omit) }}"
+        env:                 "{{ docker_container_env | default(omit) }}"
+        env_file:            "{{ docker_container_env_file | default(omit) }}"
+        etc_hosts:           "{{ docker_container_etc_hosts | default(omit) }}"
+        exposed_ports:       "{{ docker_container_exposed_ports | default(omit) }}"
+        force_kill:          "{{ docker_container_force_kill | default(omit) }}"
+        groups:              "{{ docker_container_groups | default(omit) }}"
+        hostname:            "{{ docker_container_hostname | default(omit) }}"
+        ignore_image:        "{{ docker_container_ignore_image | default(omit) }}"
+        image:               "{{ docker_image }}"
+        interactive:         "{{ docker_container_interactive | default(omit) }}"
+        ipc_mode:            "{{ docker_container_ipc_mode | default(omit) }}"
+        keep_volumes:        "{{ docker_container_keep_volumes | default(omit) }}"
+        kernel_memory:       "{{ docker_container_kernel_memory | default(omit) }}"
+        key_path:            "{{ docker_container_key_path | default(omit) }}"
+        kill_signal:         "{{ docker_container_kill_signal | default(omit) }}"
+        labels:              "{{ docker_container_labels | default(omit) }}"
+        links:               "{{ docker_container_links | default(omit) }}"
+        log_driver:          "{{ docker_container_log_driver | default(omit) }}"
+        log_options:         "{{ docker_container_log_options | default(omit) }}"
+        mac_address:         "{{ docker_container_mac_address | default(omit) }}"
+        memory:              "{{ docker_container_memory | default(omit) }}"
+        memory_reservation:  "{{ docker_container_memory_reservation | default(omit) }}"
+        memory_swap:         "{{ docker_container_memory_swap | default(omit) }}"
+        memory_swappiness:   "{{ docker_container_memory_swappiness | default(omit) }}"
+        name:                "{{ docker_container_name }}"
+        network_mode:        "{{ docker_container_network_mode | default(omit) }}"
+        networks:            "{{ docker_container_networks | default(omit) }}"
+        oom_killer:          "{{ docker_container_oom_killer | default(omit) }}"
+        oom_score_adj:       "{{ docker_container_oom_score_adj | default(omit) }}"
+        privileged:          "{{ docker_container_privileged | default(omit) }}"
+        published_ports:     "{{ docker_container_published_ports | default(omit) }}"
+        pull:                "{{ docker_container_pull | default(omit) }}"
+        purge_networks:      "{{ docker_container_purge_networks | default(omit) }}"
+        recreate:            "{{ docker_container_recreate | default(omit) }}"
+        restart:             "{{ docker_container_restart | default(omit) }}"
+        restart_policy:      "{{ docker_container_restart_policy | default(omit) }}"
+        restart_retries:     "{{ docker_container_restart_retries | default(omit) }}"
+        security_opts:       "{{ docker_container_security_opts | default(omit) }}"
+        shm_size:            "{{ docker_container_shm_size | default(omit) }}"
+        ssl_version:         "{{ docker_container_ssl_version | default(omit) }}"
+        state:               started
+        stop_signal:         "{{ docker_container_stop_signal | default(omit) }}"
+        stop_timeout:        "{{ docker_container_stop_timeout | default(omit) }}"
+        timeout:             "{{ docker_container_timeout | default(omit) }}"
+        tls:                 "{{ docker_container_tls | default(omit) }}"
+        tls_hostname:        "{{ docker_container_tls_hostname | default(omit) }}"
+        tls_verify:          "{{ docker_container_tls_verify | default(omit) }}"
+        trust_image_content: "{{ docker_container_trust_image_content | default(omit) }}"
+        tty:                 true
+        ulimits:             "{{ docker_container_ulimits | default(omit) }}"
+        user:                "{{ docker_container_user | default(omit) }}"
+        uts:                 "{{ docker_container_uts | default(omit) }}"
+        volume_driver:       "{{ docker_container_volume_driver | default(omit) }}"
+        volumes:             "{{ docker_container_volumes | default(omit) }}"
+        volumes_from:        "{{ docker_container_volumes_from | default(omit) }}"
+      with_items: "{{ docker_container_images }}"

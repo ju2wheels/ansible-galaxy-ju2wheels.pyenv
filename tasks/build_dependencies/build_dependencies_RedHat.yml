@@ -1,0 +1,27 @@
+---
+
+- name: Manage pyenv build dependencies
+  become: true
+  loop_control:
+    loop_var: pyenv_build_dependency
+  yum:
+    conf_file:         "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.conf_file | default(omit) }}"
+    disable_gpg_check: "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.disable_gpg_check | default(omit) }}"
+    disablerepo:       "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.disablerepo | default(omit) }}"
+    enablerepo:        "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.enablerepo | default(omit) }}"
+    name:              "{{ pyenv_build_dependency }}"
+    skip_broken:       "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.skip_broken | default(omit) }}"
+    state:             "{{ pyenv_build_dependencies_state }}"
+    update_cache:      "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.update_cache | default(omit) }}"
+    validate_certs:    "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager.validate_certs | default(omit) }}"
+  register: pyenv_build_dependencies_status
+  with_items: "{{ pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].packages }}"
+  when: >
+    hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Fedora', 'OracleLinux', 'RedHat', 'Scientific'] and
+    pyenv_build_dependencies is mapping and
+    pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution] is mapping and
+    pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].package_manager is mapping and
+    pyenv_build_dependencies[hostvars[inventory_hostname].ansible_distribution].packages is iterable and
+    pyenv_build_dependencies_state is defined
+  tags:
+    - dependencies

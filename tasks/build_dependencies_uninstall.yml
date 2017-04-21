@@ -1,0 +1,15 @@
+---
+
+# Remove pyenv build dependencies
+# WARNING: When you change the package_manager state to absent, please ensure to reduce the default package list as well depending on
+#          whether you are running this in a container, server, or desktop install so you dont accidentally remove packages that are
+#          required by desktop packages for example. Its recommended to reduce the package list to only uninstall the development libraries
+#          if you are unsure.
+- loop_control:
+    loop_var: pyenv_build_dependencies_include
+  vars:
+    pyenv_build_dependencies_state: absent
+  include: "{{ pyenv_build_dependencies_include }}"
+  with_first_found:
+    - "build_dependencies/build_dependencies_{{ hostvars[inventory_hostname].ansible_distribution }}.yml"
+    - "build_dependencies/build_dependencies_{{ hostvars[inventory_hostname].ansible_os_family }}.yml"

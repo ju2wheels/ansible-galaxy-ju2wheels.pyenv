@@ -1,0 +1,14 @@
+---
+
+# Configure any necessary repositories used to install recent version of GIT
+- loop_control:
+    loop_var: pyenv_repository_include
+  vars:
+    pyenv_repositories_epel_state: present
+    pyenv_repositories_git_state:  present
+  include: "{{ pyenv_repository_include }}"
+  with_first_found:
+    - files:
+        - "repository/repository_{{ hostvars[inventory_hostname].ansible_distribution }}.yml"
+        - "repository/repository_{{ hostvars[inventory_hostname].ansible_os_family }}.yml"
+      skip: true

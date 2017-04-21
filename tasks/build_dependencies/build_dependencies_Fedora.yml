@@ -1,0 +1,7 @@
+---
+
+- include: build_dependencies/build_dependencies_RedHat.yml
+  when: (hostvars[inventory_hostname].ansible_distribution_major_version | int) < 22
+
+- include: build_dependencies/build_dependencies_Fedora_dnf.yml
+  when: (hostvars[inventory_hostname].ansible_distribution_major_version | int) >= 22
