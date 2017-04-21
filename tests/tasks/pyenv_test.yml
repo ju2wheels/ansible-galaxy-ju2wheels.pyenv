@@ -1,0 +1,41 @@
+---
+
+- block:
+    - name: Create pyenv test users
+      become: true
+      loop_control:
+        loop_var: user
+      user:
+        createhome: true
+        name:       "{{ user.username }}"
+        skeleton:   "{{ pyenv_test_skel }}"
+        state:      present
+      with_items: "{{ pyenv_test_users }}"
+      tags:
+        - unit test
+        - unit test resource
+
+    # Test primary install and uninstall task sets with recommended defaults
+    - include: pyenv_test_full.yml
+
+    # Test all individually runnable task sets with required variables in a disabled state. All tasks should end up being skipped or result in no-op.
+    - include: pyenv_test_component_disabled.yml
+
+    # Test all individually runnable tasks sets with required variables. All tasks should end up being run in install/uninstall mode based on the task set context.
+    - include: pyenv_test_component_enabled.yml
+  always:
+    # WARNING: This will remove the test users and their home directory!!
+    # I add some sanity checks here just in case one of you smart alecks changes the test users to one that probably should not be removed.
+    - name: Remove pyenv test users
+      become: true
+      loop_control:
+        loop_var: user
+      user:
+        name:   "{{ user.username }}"
+        remove: true
+        state:  absent
+      with_items: "{{ pyenv_test_users }}"
+      when: user.username not in ['root', hostvars[inventory_hostname].ansible_env.SUDO_USER | default(hostvars[inventory_hostname].ansible_env.USERNAME) | default()]
+      tags:
+        - unit test
+        - unit test resource

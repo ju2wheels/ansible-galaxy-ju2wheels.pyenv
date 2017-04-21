@@ -1,0 +1,457 @@
+---
+
+# Test all individually runnable task sets with required variables in a disabled state. All tasks should end up being skipped or result in no-op.
+
+## Repository task set
+
+- debug:
+    msg: "ju2wheels.pyenv repository task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test repository
+
+- name: Run the ju2wheels.pyenv role with the repository install disabled
+  vars:
+    # Disable all repos to ensure nothing runs
+    pyenv_repositories: {}
+    pyenv_repository_keys: {}
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: repository_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test repository
+
+- assert:
+    msg: Repository configuration install is skipped for EPEL and GIT repositories on supported distros
+    that:
+      - 'not (pyenv_repository_status | changed)'
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test repository
+
+- name: Run the ju2wheels.pyenv role with the repository uninstall disabled
+  vars:
+    # Disable all repos to ensure nothing runs
+    pyenv_repositories: {}
+    pyenv_repository_keys: {}
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: repository_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test repository
+
+- assert:
+    msg: Repository configuration removal is skipped for EPEL and GIT repositories on supported distros
+    that:
+      - 'not (pyenv_repository_status | changed)'
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test repository
+
+## Build dependency management task set
+
+- debug:
+    msg: "ju2wheels.pyenv build dependency management task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test build dependencies
+
+- name: Run the ju2wheels.pyenv role with the build dependency install disabled
+  vars:
+    # Disable all build dependency packages to ensure nothing runs
+    pyenv_build_dependencies: {}
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: build_dependencies_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test build dependencies
+
+- assert:
+    msg: Install of build dependencies for Python is skipped
+    that:
+      - 'not (pyenv_build_dependencies_status | changed)'
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test build dependencies
+
+- name: Run the ju2wheels.pyenv role with the build dependency uninstall disabled
+  vars:
+    # Disable all build dependency packages to ensure nothing runs
+    pyenv_build_dependencies: {}
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: build_dependencies_uninstall
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test build dependencies
+
+- assert:
+    msg: Removal of build dependencies for Python is skipped
+    that:
+      - 'not (pyenv_build_dependencies_status | changed)'
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test build dependencies
+
+## GIT dependency management task set
+
+- debug:
+    msg: "ju2wheels.pyenv git dependency management task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test git dependencies
+
+- name: Run the ju2wheels.pyenv role with the GIT dependency install disabled 
+  vars:
+    # Disable all GIT dependency packages to ensure nothing runs
+    pyenv_git_dependencies: {}
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: git_dependencies_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test git dependencies
+
+- assert:
+    msg: Install of GIT dependencies is skipped
+    that:
+      - 'not (pyenv_build_dependencies_status | changed)'
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test git dependencies
+
+- name: Run the ju2wheels.pyenv role with the GIT dependency uninstall disabled
+  vars:
+    # Disable all GIT dependency packages to ensure nothing runs
+    pyenv_git_dependencies: {}
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: git_dependencies_uninstall
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test git dependencies
+
+- assert:
+    msg: Removal of GIT dependencies is skipped
+    that:
+      - 'not (pyenv_build_dependencies_status | changed)'
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test git dependencies
+
+## pyenv management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv management task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv install disabled
+  vars:
+    # Disable pyenv GIT clone install options
+    pyenv: {}
+    # Disable pyenv GIT clone install per user by removing pyenv_dest per user
+    pyenv_users: "{{ pyenv_test_users_pyenv_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv
+
+- loop_control:
+    loop_var: pyenv_per_user_status
+  assert:
+    msg: pyenv repository clone and install is skipped for each user
+    that:
+      - 'not (pyenv_per_user_status | changed)'
+  with_items: "{{ pyenv_pyenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv uninstall disabled
+  vars:
+    # Disable pyenv GIT clone uninstall per user by removing pyenv_dest per user
+    pyenv_users: "{{ pyenv_test_users_pyenv_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_uninstall
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv
+
+- loop_control:
+    loop_var: pyenv_per_user_status
+  assert:
+    msg: pyenv repository removal is skipped for each user
+    that:
+      - 'not (pyenv_per_user_status | changed)'
+  with_items: "{{ pyenv_pyenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv
+
+## pyenv-virtualenv management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv-virtualenv management task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv-virtualenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv-virtualenv install disabled
+  vars:
+    # Disable pyenv-virtualenv GIT clone install options
+    pyenv_virtualenv: {}
+    # Disable pyenv-virtualenv GIT clone install per user by removing pyenv-virtualenv from the plugins list per user
+    pyenv_users: "{{ pyenv_test_users_pyenv_virtualenv_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenv_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv-virtualenv
+
+- loop_control:
+    loop_var: pyenv_virtualenv_per_user_status
+  assert:
+    msg: pyenv-virtualenv repository clone and install is skipped for each user
+    that:
+      - 'not (pyenv_virtualenv_per_user_status | changed)'
+  with_items: "{{ pyenv_virtualenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv-virutalenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv-virtualenv uninstall disabled
+  vars:
+    # Disable pyenv-virtualenv GIT clone uninstall per user by removing pyenv-virtualenv from the plugins list per user
+    pyenv_users: "{{ pyenv_test_users_pyenv_virtualenv_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenv_uninstall
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv-virtualenv
+
+- loop_control:
+    loop_var: pyenv_virtualenv_per_user_status
+  assert:
+    msg: pyenv-virtualenv repository removal is skipped for each user
+    that:
+      - 'not (pyenv_virtualenv_per_user_status | changed)'
+  with_items: "{{ pyenv_virtualenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv-virutalenv
+
+## pyenv Python version management task set
+
+- debug:
+    msg: "ju2wheels.pyenv Python version management task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test Python version
+
+- name: Run the ju2wheels.pyenv role with the pyenv Python version install disabled
+  vars:
+    # Disable pyenv Python version install per user by setting empty python_versions per user
+    pyenv_users: "{{ pyenv_test_users_pyenvs_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenvs_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test Python version
+
+- loop_control:
+    loop_var: pyenv_pyenvs_per_user_status
+  assert:
+    msg: Python versions install is skipped for each user
+    that:
+      - 'not (pyenv_pyenvs_per_user_status | changed)'
+  with_items: "{{ pyenv_pyenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test Python version
+
+- name: Run the ju2wheels.pyenv role with the pyenv Python version uninstall disabled
+  vars:
+    # Disable pyenv Python version uninstall per user by setting empty python_versions per user
+    pyenv_users: "{{ pyenv_test_users_pyenvs_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenvs_uninstall
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test Python version
+
+- loop_control:
+    loop_var: pyenv_pyenvs_per_user_status
+  assert:
+    msg: Python versions removal is skipped for each user
+    that:
+      - 'not (pyenv_pyenvs_per_user_status | changed)'
+  with_items: "{{ pyenv_pyenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test Python version
+
+## pyenv virtualenvs management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv virtualenvs management task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv virtualenvs
+
+- name: Run the ju2wheels.pyenv role with the pyenv virtualenvs install disabled
+  vars:
+    # Disable pyenv virtualenvs install per user by setting empty virtualenvs per user
+    pyenv_users: "{{ pyenv_test_users_pyenv_virtualenvs_disabled }}"        
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenvs_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv virtualenvs
+
+- loop_control:
+    loop_var: pyenv_virtualenvs_per_user_status
+  assert:
+    msg: pyenv virtualenvs install is skipped for each user
+    that:
+      - 'not (pyenv_virtualenvs_per_user_status | changed)'
+  with_items: "{{ pyenv_virtualenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test python virtualenvs
+
+- name: Run the ju2wheels.pyenv role with the pyenv virtualenvs uninstall disabled
+  vars:
+    # Disable pyenv virtualenvs uninstall per user by setting empty virtualenvs per user
+    pyenv_users: "{{ pyenv_test_users_pyenv_virtualenvs_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenvs_uninstall
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test pyenv virtualenvs
+
+- loop_control:
+    loop_var: pyenv_virtualenvs_per_user_status
+  assert:
+    msg: pyenv virtualenvs removal is skipped for each user
+    that:
+      - 'not (pyenv_virtualenvs_per_user_status | changed)'
+  with_items: "{{ pyenv_virtualenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test python virtualenvs
+
+## pyenv and pyenv-virtualenv shell autoloading management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv shell autoloading management task set test disabled"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test shell autoloading
+
+- name: Run the ju2wheels.pyenv role with the pyenv shell autoloading install disabled
+  vars:
+    # Disable pyenv and pyenv-virtualenv shell autoloading install per user by setting empty shell_rc_file_block_properties and shell_rc_files per user
+    pyenv_users: "{{ pyenv_test_users_shell_env_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_shell_env_install
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test shell autoloading
+
+- loop_control:
+    loop_var: pyenv_shell_env_per_user_status
+  assert:
+    msg: pyenv shell autoloading install is skipped for each user
+    that:
+      - 'not (pyenv_shell_env_per_user_status | changed)'
+  with_items: "{{ pyenv_shell_env_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test shell autoloading
+
+- name: Run the ju2wheels.pyenv role with the pyenv shell autoloading uninstall disabled
+  vars:
+    # Disable pyenv and pyenv-virtualenv shell autoloading uninstall per user by setting empty shell_rc_file_block_properties and shell_rc_files per user
+    pyenv_users: "{{ pyenv_test_users_shell_env_disabled }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_shell_env_uninstall
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test shell autoloading
+
+- loop_control:
+    loop_var: pyenv_shell_env_per_user_status
+  assert:
+    msg: pyenv shell autoloading removal is skipped for each user
+    that:
+      - 'not (pyenv_shell_env_per_user_status | changed)'
+  with_items: "{{ pyenv_shell_env_status.results }}"
+  tags:
+    - unit test
+    - unit test component task disabled
+    - unit test shell autoloading

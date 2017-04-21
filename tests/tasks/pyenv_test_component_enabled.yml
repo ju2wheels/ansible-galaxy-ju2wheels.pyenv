@@ -1,0 +1,559 @@
+---
+
+# Test all individually runnable tasks sets with required variables. All tasks should end up being run in install/uninstall mode based on the task set context
+
+## Repository task set
+
+- debug:
+    msg: "ju2wheels.pyenv repository management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test repository
+
+- name: Run the ju2wheels.pyenv role with the repository install enabled
+  vars:
+    pyenv_repositories: "{{ pyenv_test_repositories }}"
+    pyenv_repository_keys: "{{ pyenv_test_repository_keys }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: repository_install
+  tags:
+    - unit test
+    - unit test component task enabled
+        - unit test repository
+
+- assert:
+    msg: Repository configuration install is successful for EPEL and GIT repositories on supported distros
+    that:
+      - 'pyenv_repository_status | changed'
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test repository
+
+- assert:
+    msg: Repository key configuraton install is successful for EPEL and GIT repositories on supported distros
+    that:
+      - 'pyenv_repository_key_status | changed or pyenv_repository_key_status | succeeded'
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test repository
+
+## Build dependency management task set
+
+- debug:
+    msg: "ju2wheels.pyenv build dependency management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test build dependencies
+    
+- name: Run the ju2wheels.pyenv role with the build dependency install enabled
+  vars:
+    pyenv_build_dependencies: "{{ pyenv_test_build_dependencies }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: build_dependencies_install
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test build dependencies
+
+- assert:
+    msg: Build dependencies for Python are successfully installed
+    that:
+      - 'pyenv_build_dependencies_status | changed'
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test build dependencies
+
+## GIT dependency management task set
+
+- debug:
+    msg: "ju2wheels.pyenv git dependency management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test git dependencies
+
+- name: Run the ju2wheels.pyenv role with the GIT dependency install enabled
+  vars:
+    pyenv_git_dependencies: "{{ pyenv_test_git_dependencies }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: git_dependencies_install
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test git dependencies
+
+- assert:
+    msg: GIT dependencies are successfully installed
+    that:
+      - 'pyenv_build_dependencies_status | changed'
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test git dependencies
+
+## pyenv management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled  
+    - unit test pyenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv install enabled
+  vars:
+    # Requires pyenv.repo, the rest are optional GIT module parameters
+    pyenv: "{{ pyenv_test }}"
+    # Requires pyenv_dest and username per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_install
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv
+
+- loop_control:
+    loop_var: pyenv_per_user_status
+  assert:
+    msg: pyenv repository is cloned and successfully installed for each user
+    that:
+      - 'pyenv_per_user_status | changed'
+  with_items: "{{ pyenv_pyenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv
+
+## pyenv-virtualenv management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv-virtualenv management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv-virutalenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv-virtualenv install enabled
+  vars:
+    # Requires pyenv_virtualenv.repo, the rest are optional GIT module parameters
+    pyenv_virtualenv: "{{ pyenv_test_virtualenv }}"
+    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, and username per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenv_install
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv-virutalenv
+
+- loop_control:
+    loop_var: pyenv_virtualenv_per_user_status
+  assert:
+    msg: pyenv-virtualenv repository is cloned and successfully installed for each user
+    that:
+      - 'pyenv_virtualenv_per_user_status | changed'
+  with_items: "{{ pyenv_virtualenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv-virutalenv
+
+## pyenv Python version management task set
+
+- debug:
+    msg: "ju2wheels.pyenv Python version management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test Python version
+
+- name: Run the ju2wheels.pyenv role with the pyenv Python version install enabled
+  vars:
+    # Requires python_dest, python_versions and username per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenvs_install
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test Python version
+
+- loop_control:
+    loop_var: pyenv_pyenvs_per_user_status
+  assert:
+    msg: Python versions are successfully installed for each user
+    that:
+      - 'pyenv_pyenvs_per_user_status | changed'
+  with_items: "{{ pyenv_pyenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test Python version
+
+## pyenv virtualenvs management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv virtualenvs management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test python virtualenvs
+
+- name: Run the ju2wheels.pyenv role with the pyenv virtualenvs install enabled
+  vars:
+    # Requires plugins containing 'pyenv-virtualenv', python_dest, username, and virtualenvs per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenvs_install
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test python virtualenvs
+
+- loop_control:
+    loop_var: pyenv_virtualenvs_per_user_status
+  assert:
+    msg: pyenv virtualenvs are successfully installed for each user
+    that:
+      - 'pyenv_virtualenvs_per_user_status | changed'
+  with_items: "{{ pyenv_virtualenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test python virtualenvs
+
+## pyenv and pyenv-virtualenv shell autoloading management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv shell autoloading management task set test install"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test shell autoloading
+
+- name: Run the ju2wheels.pyenv role with the pyenv shell autoloading install enabled
+  vars:
+    pyenv_shell_env_state: present
+    # Requires pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv shell env autoloading
+    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv-virtualenv shell env autoloading
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_shell_env_install
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test shell autoloading
+
+- loop_control:
+    loop_var: pyenv_shell_env_per_user_status
+  assert:
+    msg: pyenv shell autoloading is successfully installed for each user
+    that:
+      - 'pyenv_shell_env_per_user_status | changed'
+  with_items: "{{ pyenv_shell_env_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test shell autoloading
+
+# Test all individually runnable tasks sets with required variables. All tasks should end up being run in uninstall mode ensuring everything is absent.
+
+## pyenv and pyenv-virtualenv shell autoloading management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv shell autoloading management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test shell autoloading
+
+- name: Run the ju2wheels.pyenv role with the pyenv shell autoloading uninstall enabled
+  vars:
+    # Requires pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv shell env autoloading
+    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv-virtualenv shell env autoloading
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_shell_env_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test shell autoloading
+
+- loop_control:
+    loop_var: pyenv_shell_env_per_user_status
+  assert:
+    msg: pyenv shell autoloading is successfully removed for each user
+    that:
+      - 'pyenv_shell_env_per_user_status | changed'
+  with_items: "{{ pyenv_shell_env_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test shell autoloading
+
+## pyenv virtualenvs management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv virtualenvs management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv virtualenvs
+
+- name: Run the ju2wheels.pyenv role with the pyenv virtualenvs uninstall enabled
+  vars:
+    # Requires plugins containing 'pyenv-virtualenv', python_dest, username, and virtualenvs per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenvs_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv virtualenvs
+
+- loop_control:
+    loop_var: pyenv_virtualenvs_per_user_status
+  assert:
+    msg: pyenv virtualenvs are successfully removed for each user
+    that:
+      - 'pyenv_virtualenvs_per_user_status | changed'
+  with_items: "{{ pyenv_virtualenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv virtualenvs
+
+## pyenv Python version management task set
+
+- debug:
+    msg: "ju2wheels.pyenv Python version management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test Python version
+
+- name: Run the ju2wheels.pyenv role with the pyenv Python version uninstall enabled
+  vars:
+    # Requires python_dest, python_versions and username per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenvs_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test Python version
+
+- loop_control:
+    loop_var: pyenv_pyenvs_per_user_status
+  assert:
+    msg: Python versions are successfully removed for each user
+    that:
+      - 'pyenv_pyenvs_per_user_status | changed'
+  with_items: "{{ pyenv_pyenvs_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test Python version
+
+## pyenv-virtualenv management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv-virtualenv management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv-virtualenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv-virtualenv uninstall enabled
+  vars:
+    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, and username per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_virtualenv_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv-virtualenv
+
+- loop_control:
+    loop_var: pyenv_virtualenv_per_user_status
+  assert:
+    msg: pyenv-virtualenv repository is successfully removed for each user
+    that:
+      - 'pyenv_virtualenv_per_user_status | changed'
+  with_items: "{{ pyenv_virtualenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv-virtualenv
+
+## pyenv management task set
+
+- debug:
+    msg: "ju2wheels.pyenv pyenv management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv
+
+- name: Run the ju2wheels.pyenv role with the pyenv uninstall enabled
+  vars:
+    # Requires pyenv_dest and username per user
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: pyenv_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv
+
+- loop_control:
+    loop_var: pyenv_per_user_status
+  assert:
+    msg: pyenv repository is successfully removed for each user
+    that:
+      - 'pyenv_per_user_status | changed'
+  with_items: "{{ pyenv_pyenv_status.results }}"
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test pyenv
+
+## GIT dependency management task set
+
+- debug:
+    msg: "ju2wheels.pyenv git dependency management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test git dependencies
+
+- name: Run the ju2wheels.pyenv role with the GIT dependency uninstall enabled
+  vars:
+    pyenv_git_dependencies: "{{ pyenv_test_git_dependencies }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: git_dependencies_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test git dependencies
+
+- assert:
+    msg: GIT dependencies are successfully removed
+    that:
+      - 'pyenv_build_dependencies_status | changed'
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test git dependencies
+
+## Build dependency management task set
+
+- debug:
+    msg: "ju2wheels.pyenv build dependency management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test build dependencies
+
+- name: Run the ju2wheels.pyenv role with the build dependency uninstall enabled
+  vars:
+    # Override the build dependency package list being uninstalled so that we dont accidentally remove too many dependent packages depending on whether
+    # we are running in a container, desktop, or server. We reduce the uninstall package list to only the dev packages instead of the same package list
+    # used for install.
+    pyenv_build_dependencies: "{{ pyenv_test_build_dependencies_uninstall }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: build_dependencies_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test build dependencies
+
+- assert:
+    msg: Build dependencies for Python are successfully removed
+    that:
+      - 'pyenv_build_dependencies_status | changed'
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test build dependencies
+
+## Repository task set
+
+- debug:
+    msg: "ju2wheels.pyenv repository management task set test uninstall"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test repository
+
+- name: Run the ju2wheels.pyenv role with the repository uninstall enabled
+  vars:
+    pyenv_repositories: "{{ pyenv_test_repositories }}"
+    pyenv_repository_keys: "{{ pyenv_test_repository_keys }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: repository_uninstall
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test repository
+
+- assert:
+    msg: Repository configuration removal is successful for EPEL and GIT repositories on supported distros
+    that:
+      - 'pyenv_repository_status | changed'
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test repository
+
+- assert:
+    msg: Repository key configuraton removal is successful for EPEL and GIT repositories on supported distros
+    that:
+      - 'pyenv_repository_key_status | changed'
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  tags:
+    - unit test
+    - unit test component task enabled
+    - unit test repository

@@ -1,0 +1,427 @@
+---
+
+# Most of these vars are defined as defaults but we duplicate here for completeness (with prefix changed from pyenv_ to pyenv_test_)
+# and to easily override defaults with test specific values
+pyenv_test:
+  force: yes
+  repo: 'https://github.com/yyuu/pyenv.git'
+  umask: '022'
+  update: yes
+  version: master
+
+pyenv_test_build_dependencies:
+  Alpine:
+    package_manager:
+      update_cache: yes
+    packages:
+      - bash
+      - build-base
+      - bzip2
+      - bzip2-dev
+      - ca-certificates
+      - coreutils
+      - curl
+      - gdbm-dev
+      - linux-headers
+      - llvm
+      - ncurses-dev
+      - openssl-dev
+      - readline-dev
+      - sqlite-dev
+      - tar
+      - tk-dev
+      - wget
+      - xz
+      - xz-dev
+      - zlib-dev
+  Amazon:
+    package_manager:
+      update_cache: yes
+    packages:
+      - autoconf
+      - automake
+      - bzip2
+      - bzip2-devel
+      - ca-certificates
+      - curl
+      - gcc
+      - gcc-c++
+      - gdbm-devel
+      - kernel-headers
+      - make
+      - ncurses-devel
+      - openssl-devel
+      - pkgconfig
+      - readline-devel
+      - sqlite-devel
+      - tar
+      - wget
+      - xz
+      - xz-devel
+      - zlib-devel
+  Debian:
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - automake
+      - build-essential
+      - bzip2
+      - ca-certificates
+      - curl
+      - libbz2-dev
+      - libgdbm-dev
+      - liblzma-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - "linux-headers-{{ hostvars[inventory_hostname].ansible_kernel if not (hostvars[inventory_hostname].ansible_virtualization_role == 'guest' and hostvars[inventory_hostname].ansible_virtualization_type == 'docker') else 'amd64' }}"
+      - llvm
+      - pkg-config
+      - tar
+      - tk-dev
+      - wget
+      - xz-utils
+      - zlib1g-dev
+  CentOS: &el_build_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - autoconf
+      - automake
+      - bzip2
+      - bzip2-devel
+      - ca-certificates
+      - curl
+      - gcc
+      - gcc-c++
+      - gdbm-devel
+      - kernel-headers
+      - make
+      - ncurses-devel
+      - openssl-devel
+      - pkgconfig
+      - readline-devel
+      - sqlite-devel
+      - tar
+      - tk-devel
+      - wget
+      - xz
+      - xz-devel
+      - zlib-devel
+  Fedora: *el_build_deps
+  openSUSE: &opensuse_build_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - autoconf
+      - automake
+      - bzip2
+      - ca-certificates-cacert
+      - ca-certificates-mozilla
+      - curl
+      - gcc
+      - gcc-c++
+      - gdbm-devel
+      - kernel-devel
+      - libbz2-devel
+      - libncurses5
+      - libopenssl-devel
+      - make
+      - ncurses-devel
+      - pkg-config
+      - readline-devel
+      - sqlite3-devel
+      - tar
+      - tk-devel
+      - wget
+      - xz
+      - xz-devel
+      - zlib-devel
+  openSUSE Leap: *opensuse_build_deps
+  OracleLinux: *el_build_deps
+  RedHat: *el_build_deps
+  Scientific: *el_build_deps
+  Ubuntu: &ubuntu_build_deps
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - automake
+      - build-essential
+      - bzip2
+      - ca-certificates
+      - curl
+      - libbz2-dev
+      - libgdbm-dev
+      - liblzma-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - "linux-headers-{{ hostvars[inventory_hostname].ansible_kernel if not (hostvars[inventory_hostname].ansible_virtualization_role == 'guest' and hostvars[inventory_hostname].ansible_virtualization_type == 'docker') else 'generic' }}"
+      - llvm
+      - pkg-config
+      - tar
+      - tk-dev
+      - wget
+      - xz-utils
+      - zlib1g-dev
+  Linuxmint: *ubuntu_build_deps
+  
+pyenv_test_build_dependencies_uninstall:
+  Alpine:
+    package_manager:
+      update_cache: yes
+    packages:
+      - gdbm-dev
+      - ncurses-dev
+      - openssl-dev
+      - readline-dev
+      - sqlite-dev
+      - tk-dev
+      - xz-dev
+      - zlib-dev
+  Amazon:
+    package_manager:
+      update_cache: yes
+    packages:
+      - bzip2-devel
+      - gdbm-devel
+      - ncurses-devel
+      - openssl-devel
+      - readline-devel
+      - sqlite-devel
+      - xz-devel
+      - zlib-devel
+  Debian:
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - libbz2-dev
+      - libgdbm-dev
+      - liblzma-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - tk-dev
+      - zlib1g-dev
+  CentOS: &el_build_deps_uninstall
+    package_manager:
+      update_cache: yes
+    packages:
+      - bzip2-devel
+      - gdbm-devel
+      - ncurses-devel
+      - openssl-devel
+      - readline-devel
+      - sqlite-devel
+      - tk-devel
+      - xz-devel
+      - zlib-devel
+  Fedora: *el_build_deps_uninstall
+  openSUSE: &opensuse_build_deps_uninstall
+    package_manager:
+      update_cache: yes
+    packages:
+      - gdbm-devel
+      - kernel-devel
+      - libbz2-devel
+      - libopenssl-devel
+      - ncurses-devel
+      - readline-devel
+      - sqlite3-devel
+      - tk-devel
+      - xz-devel
+      - zlib-devel
+  openSUSE Leap: *opensuse_build_deps_uninstall
+  OracleLinux: *el_build_deps_uninstall
+  RedHat: *el_build_deps_uninstall
+  Scientific: *el_build_deps_uninstall
+  Ubuntu: &ubuntu_build_deps_uninstall
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - libbz2-dev
+      - libgdbm-dev
+      - liblzma-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - tk-dev
+      - zlib1g-dev
+  Linuxmint: *ubuntu_build_deps_uninstall
+
+pyenv_test_git_dependencies:
+  Alpine:
+    package_manager:
+      update_cache: yes
+    packages:
+      - git
+  Amazon:
+    package_manager:
+      update_cache: yes
+    packages:
+      - git
+  Debian: &debian_git_deps
+    package_manager:
+      cache_valid_time: 300
+      update_cache: yes
+    packages:
+      - git
+  CentOS: &el_git_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - git
+  Fedora: *el_git_deps
+  Linuxmint: *debian_git_deps
+  openSUSE: &opensuse_git_deps
+    package_manager:
+      update_cache: yes
+    packages:
+      - git
+  openSUSE Leap: *opensuse_git_deps
+  OracleLinux: *el_git_deps
+  RedHat: *el_git_deps
+  Scientific: *el_git_deps
+  Ubuntu: *debian_git_deps
+
+pyenv_test_repositories:
+  Amazon:
+    # Repo description and arguments to pass on to yum_repository to manage the repo configuration
+    epel:
+      description:    "Extra Packages for Enterprise Linux 6 - $basearch"
+      enabled:        yes
+      failovermethod: priority
+      file:           epel
+      gpgcheck:       yes
+      gpgkey:         'https://getfedora.org/static/0608B895.txt'
+      name:           epel
+      mirrorlist:     "https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch"
+  CentOS:
+    # Repo description and arguments to pass on to yum_repository to manage the repo configuration
+    epel: &el_epel_repo
+      description:    "Extra Packages for Enterprise Linux {{ hostvars[inventory_hostname].ansible_distribution_major_version }} - $basearch"
+      enabled:        yes
+      failovermethod: priority
+      file:           epel
+      gpgcheck:       yes
+      gpgkey:         "{{ 'https://getfedora.org/static/0608B895.txt' if hostvars[inventory_hostname].ansible_distribution_major_version == '6' else 'https://getfedora.org/static/217521F6.txt' }}"
+      name:           epel
+      mirrorlist:     "https://mirrors.fedoraproject.org/metalink?repo=epel-{{ hostvars[inventory_hostname].ansible_distribution_major_version }}&arch=$basearch"
+  Linuxmint:
+    # Repo decription and arguments to pass on to apt_repository to manage the repo
+    git:
+      repo: "deb http://ppa.launchpad.net/git-core/ppa/ubuntu {{ 'trusty' if hostvars[inventory_hostname].ansible_distribution_major_version == '17' else 'xenial' }} main"
+  OracleLinux:
+    epel: *el_epel_repo
+  RedHat:
+    epel: *el_epel_repo
+  Scientific:
+    epel: *el_epel_repo
+  Ubuntu:
+    # Repo decription and arguments to pass on to apt_repository to manage the repo
+    git:
+      repo: 'ppa:git-core/ppa'
+
+pyenv_test_repository_keys:
+  Amazon:
+    epel:
+      key: 'https://getfedora.org/static/0608B895.txt'
+  CentOS:
+    epel: &el_epel_key
+      key: "{{ 'https://getfedora.org/static/0608B895.txt' if hostvars[inventory_hostname].ansible_distribution_major_version == '6' else 'https://getfedora.org/static/217521F6.txt' }}"
+  Linuxmint:
+    git:
+      id:        E1DF1F24
+      keyserver: keyserver.ubuntu.com
+  OracleLinux:
+    epel: *el_epel_key
+  RedHat:
+    epel: *el_epel_key
+  Scientific:
+    epel: *el_epel_key
+
+pyenv_test_skel: /etc/skel
+
+pyenv_test_users:
+  - username: pyenv_test_user1
+    plugins: &pyenv_plugins
+      - pyenv-virtualenv
+    pyenv_dest: ".pyenv"
+    shell_rc_file_block_properties: &shell_rc_file_block_properties
+      backup: yes
+      create: yes
+      follow: yes
+    shell_rc_files:
+      - ".bashrc"
+    python_versions: &python_versions
+      - 2.7.13
+    virtualenvs: &virtualenvs
+      - name: venv-2.7.13
+        python_version: 2.7.13
+  - username: pyenv_test_user2
+    plugins: *pyenv_plugins
+    pyenv_dest: ".pyenv"
+    shell_rc_file_block_properties: *shell_rc_file_block_properties
+    shell_rc_files:
+      - ".bashrc"
+    python_versions: *python_versions
+    virtualenvs: *virtualenvs
+    
+pyenv_test_users_pyenv_disabled: &pyenv_disabled
+  - username: pyenv_test_user1
+    plugins: []
+  - username: pyenv_test_user1
+    plugins: []
+    
+pyenv_test_users_pyenv_virtualenv_disabled: *pyenv_disabled
+
+pyenv_test_users_pyenv_virtualenvs_disabled:
+  - username: pyenv_test_user1
+    plugins: *pyenv_plugins
+    pyenv_dest: ".pyenv"
+    python_versions: *python_versions
+    virtualenvs: []
+  - username: pyenv_test_user2
+    plugins: *pyenv_plugins
+    pyenv_dest: ".pyenv"
+    python_versions: *python_versions
+    virtualenvs: []
+
+pyenv_test_users_pyenvs_disabled:
+  - username: pyenv_test_user1
+    pyenv_dest: ".pyenv"
+    python_versions: []
+  - username: pyenv_test_user2
+    pyenv_dest: ".pyenv"
+    python_versions: []
+
+pyenv_test_users_shell_env_disabled:
+  - username: pyenv_test_user1
+    plugins: *pyenv_plugins
+    pyenv_dest: ".pyenv"
+    shell_rc_file_block_properties: {}
+    shell_rc_files: []
+  - username: pyenv_test_user2
+    plugins: *pyenv_plugins
+    pyenv_dest: ".pyenv"
+    shell_rc_file_block_properties: {}
+    shell_rc_files: []
+
+pyenv_test_virtualenv:
+  force: yes
+  repo: 'https://github.com/yyuu/pyenv-virtualenv.git'
+  umask: '022'
+  update: yes
+  version: master

@@ -1,6 +1,8 @@
 ---
 
 - hosts: localhost
+  vars_files:
+    - vars/pyenv_test.yml
   tasks:
-    - include: tasks/test.yml
+    - include: tasks/pyenv_test.yml
     

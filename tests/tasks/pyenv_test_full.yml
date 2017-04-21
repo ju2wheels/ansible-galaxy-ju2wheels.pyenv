@@ -1,0 +1,48 @@
+---
+
+# Test primary install and uninstall task sets with recommended defaults
+
+- debug:
+    msg: "ju2wheels.pyenv primary (all task sets) install test"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test full
+    - unit test full install
+
+- name: Run the ju2wheels.pyenv role with the default task set main.yml (aka install.yml)
+  vars:
+    # Override the default user configured
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    # main.yml and install.yml are the same default task set
+    #tasks_from: install
+  tags:
+    - unit test
+    - unit test full
+    - unit test full install
+
+- debug:
+    msg: "ju2wheels.pyenv primary (all task sets) uninstall test"
+    verbosity: 0
+  tags:
+    - unit test
+    - unit test full
+    - unit test full uninstall
+
+- name: Run the ju2wheels.pyenv role with the uninstall task set uninstall.yml
+  vars:
+    # Override the build dependency package list being uninstalled so that we dont accidentally remove too many dependent packages depending on whether
+    # we are running in a container, desktop, or server. We reduce the uninstall package list to only the dev packages instead of the same package list
+    # used for install.
+    pyenv_build_dependencies: "{{ pyenv_test_build_dependencies_uninstall }}"
+    # Override the default user configured
+    pyenv_users: "{{ pyenv_test_users }}"
+  include_role:
+    name: ju2wheels.pyenv
+    tasks_from: uninstall
+  tags:
+    - unit test
+    - unit test full
+    - unit test full uninstall
