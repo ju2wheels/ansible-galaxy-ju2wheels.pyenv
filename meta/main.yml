@@ -1,4 +1,5 @@
 ---
+
 galaxy_info:
   author: Julio Lajara
   description: 'Ansible Galaxy role for pyenv (https://github.com/yyuu/pyenv).'
@@ -46,6 +47,7 @@ galaxy_info:
       versions:
         - 13.2
     - name: openSUSE Leap
+      versions:
         - 42.1
         - 42.2
     - name: OracleLinux
