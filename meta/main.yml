@@ -45,6 +45,7 @@ galaxy_info:
     - name: openSUSE
       versions:
         - 13.2
+    - name: openSUSE Leap
         - 42.1
         - 42.2
     - name: OracleLinux
