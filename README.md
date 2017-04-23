@@ -66,7 +66,7 @@ For actual example implementations of these role variables see `defaults\main.ym
 ## Task Sets
 
 The `ju2wheels.pyenv` role is designed in a modular fashion and has different task sets defined which can be used independently of each other with the same role variables using the
-Ansible `include_role` module. For a full description and requirements of each task set see the [task sets README](tasks/README.md).
+Ansible `include_role` module. For a full description and requirements of each task set see the [task sets README](https://github.com/ju2wheels/ansible-galaxy-ju2wheels.pyenv/tree/master/tasks/README.md).
 
 ## Example Playbook
 
@@ -128,7 +128,7 @@ Ansible `include_role` module. For a full description and requirements of each t
 
 ## Unit Testing
 
-See the [Unit Testing README](tests/README.md) for requirements and unit testing process.
+See the [Unit Testing README](https://github.com/ju2wheels/ansible-galaxy-ju2wheels.pyenv/tree/master/tests/README.md) for requirements and unit testing process.
 
 ## Contributing
 
