@@ -1,12 +1,13 @@
 # ju2wheels.pyenv Unit Tests
 
-The `ju2wheels.pyenv` unit tests leverage `docker` containers to run unit tests against multiple Linux distribution releases.
+The `ju2wheels.pyenv` unit tests leverage `docker` images to run unit tests against multiple Linux distribution releases.
 
 ## Requirements
 
 In order to run the unit tests you need to have the following installed on your testing host:
 
 * ansible >= 2.1
+* docker
 * docker-py >= 1.7.0 (for the `docker_container` Ansible module)
 
 ## Running the Unit Tests

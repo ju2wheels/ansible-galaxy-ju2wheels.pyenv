@@ -38,7 +38,7 @@
     msg: Repository key configuraton install is successful for EPEL and GIT repositories on supported distros
     that:
       - 'pyenv_repository_key_status | changed or pyenv_repository_key_status | succeeded'
-  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific']
   tags:
     - unit test
     - unit test component task enabled
@@ -552,7 +552,7 @@
     msg: Repository key configuraton removal is successful for EPEL and GIT repositories on supported distros
     that:
       - 'pyenv_repository_key_status | changed'
-  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific', 'Ubuntu']
+  when: hostvars[inventory_hostname].ansible_distribution in ['Amazon', 'CentOS', 'Linuxmint', 'OracleLinux', 'RedHat', 'Scientific']
   tags:
     - unit test
     - unit test component task enabled

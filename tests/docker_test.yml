@@ -7,7 +7,6 @@
     docker_container_command: >
       --extra-vars '{"ansible_become": false}'
       --skip-tags 'unit test full'
-      -vvv
       /ansible-playbook/tests/test.yml
     docker_container_entrypoint:     ansible-playbook
     docker_container_env:
