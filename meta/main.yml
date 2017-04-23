@@ -28,7 +28,7 @@ galaxy_info:
         - 8
         - 9
     - name: CentOS
-      versions: &el_versions
+      versions:
         - 5
         - 6
         - 7  
@@ -51,11 +51,20 @@ galaxy_info:
         - 42.1
         - 42.2
     - name: OracleLinux
-      versions: *el_versions
+      versions:
+        - 5
+        - 6
+        - 7  
     - name: RedHat
-      versions: *el_versions
+      versions:
+        - 5
+        - 6
+        - 7  
     - name: Scientific
-      versions: *el_versions
+      versions:
+        - 5
+        - 6
+        - 7  
     - name: Ubuntu
       versions:
         - 12.04

@@ -1,6 +1,6 @@
 # ju2wheels.pyenv
 
-`ju2wheels.pyenv` is an Ansible Galaxy role for [pyenv](https://github.com/yyuu/pyenv).
+`ju2wheels.pyenv` is an [Ansible Galaxy](https://galaxy.ansible.com/ju2wheels/pyenv/) role for [pyenv](https://github.com/yyuu/pyenv).
 It is designed to be highly modular for use with the `include_role` module across multiple platforms.
 
 ## Requirements
@@ -72,6 +72,7 @@ Ansible `include_role` module. For a full description and requirements of each t
 
 ```
 ---
+
 - hosts: localhost
   vars:
     # If you already have epel-release installed or EPEL configured on EL
