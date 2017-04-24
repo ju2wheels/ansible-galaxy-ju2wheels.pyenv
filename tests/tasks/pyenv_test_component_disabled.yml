@@ -410,7 +410,7 @@
 
 - name: Run the ju2wheels.pyenv role with the pyenv shell autoloading install disabled
   vars:
-    # Disable pyenv and pyenv-virtualenv shell autoloading install per user by setting empty shell_rc_file_block_properties and shell_rc_files per user
+    # Disable pyenv and pyenv-virtualenv shell autoloading install per user by setting empty shell_rc_blockinfile_properties and shell_rc_files per user
     pyenv_users: "{{ pyenv_test_users_shell_env_disabled }}"
   include_role:
     name: ju2wheels.pyenv
@@ -434,7 +434,7 @@
 
 - name: Run the ju2wheels.pyenv role with the pyenv shell autoloading uninstall disabled
   vars:
-    # Disable pyenv and pyenv-virtualenv shell autoloading uninstall per user by setting empty shell_rc_file_block_properties and shell_rc_files per user
+    # Disable pyenv and pyenv-virtualenv shell autoloading uninstall per user by setting empty shell_rc_blockinfile_properties and shell_rc_files per user
     pyenv_users: "{{ pyenv_test_users_shell_env_disabled }}"
   include_role:
     name: ju2wheels.pyenv

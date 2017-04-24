@@ -8,30 +8,30 @@
   loop_control:
     loop_var: pyenv_user
   blockinfile:
-    attributes:    "{{ pyenv_user.0.shell_rc_file_block_properties.attributes | default(omit) }}"
-    backup:        "{{ pyenv_user.0.shell_rc_file_block_properties.backup | default(omit) }}"
+    attributes:    "{{ pyenv_user.0.shell_rc_blockinfile_properties.attributes | default(omit) }}"
+    backup:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.backup | default(omit) }}"
     block: |
                    export PYENV_ROOT="{{ (pyenv_user.0.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.0.pyenv_dest, [pyenv_users_home[pyenv_user.0.username], pyenv_user.0.pyenv_dest] | join('/')) }}"
                    export PATH="${PYENV_ROOT}/bin:$PATH"
 
                    eval "$(pyenv init -)"
-    create:        "{{ pyenv_user.0.shell_rc_file_block_properties.create | default(omit) }}"
+    create:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.create | default(omit) }}"
     # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory
     dest:          "{{ (pyenv_user.1 | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.1, [pyenv_users_home[pyenv_user.0.username], pyenv_user.1] | join('/')) }}"
-    follow:        "{{ pyenv_user.0.shell_rc_file_block_properties.follow | default(omit) }}"
-    group:         "{{ pyenv_user.0.shell_rc_file_block_properties.group | default(omit) }}"
-    insertafter:   "{{ pyenv_user.0.shell_rc_file_block_properties.insertafter | default(omit) }}"
-    insertbefore:  "{{ pyenv_user.0.shell_rc_file_block_properties.insertbefore | default(omit) }}"
+    follow:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.follow | default(omit) }}"
+    group:         "{{ pyenv_user.0.shell_rc_blockinfile_properties.group | default(omit) }}"
+    insertafter:   "{{ pyenv_user.0.shell_rc_blockinfile_properties.insertafter | default(omit) }}"
+    insertbefore:  "{{ pyenv_user.0.shell_rc_blockinfile_properties.insertbefore | default(omit) }}"
     marker:        "# {mark} ANSIBLE MANAGED -- {{ role_path | basename }} : pyenv"
-    mode:          "{{ pyenv_user.0.shell_rc_file_block_properties.mode | default('0644') }}"
-    owner:         "{{ pyenv_user.0.shell_rc_file_block_properties.owner | default(omit) }}"
-    selevel:       "{{ pyenv_user.0.shell_rc_file_block_properties.selevel | default(omit) }}"
-    serole:        "{{ pyenv_user.0.shell_rc_file_block_properties.serole | default(omit) }}"
-    setype:        "{{ pyenv_user.0.shell_rc_file_block_properties.setype | default(omit) }}"
-    seuser:        "{{ pyenv_user.0.shell_rc_file_block_properties.seuser | default(omit) }}"
+    mode:          "{{ pyenv_user.0.shell_rc_blockinfile_properties.mode | default('0644') }}"
+    owner:         "{{ pyenv_user.0.shell_rc_blockinfile_properties.owner | default(omit) }}"
+    selevel:       "{{ pyenv_user.0.shell_rc_blockinfile_properties.selevel | default(omit) }}"
+    serole:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.serole | default(omit) }}"
+    setype:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.setype | default(omit) }}"
+    seuser:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.seuser | default(omit) }}"
     state:         "{{ pyenv_shell_env_state }}"
-    unsafe_writes: "{{ pyenv_user.0.shell_rc_file_block_properties.unsafe_writes | default(omit) }}"
-    validate:      "{{ pyenv_user.0.shell_rc_file_block_properties.validate | default(omit) }}"
+    unsafe_writes: "{{ pyenv_user.0.shell_rc_blockinfile_properties.unsafe_writes | default(omit) }}"
+    validate:      "{{ pyenv_user.0.shell_rc_blockinfile_properties.validate | default(omit) }}"
   register: pyenv_shell_env_status
   with_subelements:
     - "{{ pyenv_users }}"
@@ -42,7 +42,7 @@
     pyenv_user is iterable and
     pyenv_user.0 is mapping and
     pyenv_user.0.pyenv_dest is defined and
-    pyenv_user.0.shell_rc_file_block_properties is mapping and
+    pyenv_user.0.shell_rc_blockinfile_properties is mapping and
     pyenv_user.0.username is defined
   tags:
     - environment
@@ -56,26 +56,26 @@
   loop_control:
     loop_var: pyenv_user
   blockinfile:
-    attributes:    "{{ pyenv_user.0.shell_rc_file_block_properties.attributes | default(omit) }}"
-    backup:        "{{ pyenv_user.0.shell_rc_file_block_properties.backup | default(omit) }}"
+    attributes:    "{{ pyenv_user.0.shell_rc_blockinfile_properties.attributes | default(omit) }}"
+    backup:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.backup | default(omit) }}"
     block: |
                    eval "$(pyenv virtualenv-init -)"
-    create:        "{{ pyenv_user.0.shell_rc_file_block_properties.create | default(omit) }}"
+    create:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.create | default(omit) }}"
     # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory
     dest:          "{{ (pyenv_user.1 | is_abs or pyenv_users_home[pyenv_user.0.username] is not defined) | ternary(pyenv_user.1, [pyenv_users_home[pyenv_user.0.username], pyenv_user.1] | join('/')) }}"
-    follow:        "{{ pyenv_user.0.shell_rc_file_block_properties.follow | default(omit) }}"
-    group:         "{{ pyenv_user.0.shell_rc_file_block_properties.group | default(omit) }}"
+    follow:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.follow | default(omit) }}"
+    group:         "{{ pyenv_user.0.shell_rc_blockinfile_properties.group | default(omit) }}"
     insertafter:   "# {mark} ANSIBLE MANAGED -- {{ role_path | basename }} : pyenv"
     marker:        "# {mark} ANSIBLE MANAGED -- {{ role_path | basename }} : pyenv-virtualenv"
-    mode:          "{{ pyenv_user.0.shell_rc_file_block_properties.mode | default('0644') }}"
-    owner:         "{{ pyenv_user.0.shell_rc_file_block_properties.owner | default(omit) }}"
-    selevel:       "{{ pyenv_user.0.shell_rc_file_block_properties.selevel | default(omit) }}"
-    serole:        "{{ pyenv_user.0.shell_rc_file_block_properties.serole | default(omit) }}"
-    setype:        "{{ pyenv_user.0.shell_rc_file_block_properties.setype | default(omit) }}"
-    seuser:        "{{ pyenv_user.0.shell_rc_file_block_properties.seuser | default(omit) }}"
+    mode:          "{{ pyenv_user.0.shell_rc_blockinfile_properties.mode | default('0644') }}"
+    owner:         "{{ pyenv_user.0.shell_rc_blockinfile_properties.owner | default(omit) }}"
+    selevel:       "{{ pyenv_user.0.shell_rc_blockinfile_properties.selevel | default(omit) }}"
+    serole:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.serole | default(omit) }}"
+    setype:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.setype | default(omit) }}"
+    seuser:        "{{ pyenv_user.0.shell_rc_blockinfile_properties.seuser | default(omit) }}"
     state:         "{{ pyenv_shell_env_state }}"
-    unsafe_writes: "{{ pyenv_user.0.shell_rc_file_block_properties.unsafe_writes | default(omit) }}"
-    validate:      "{{ pyenv_user.0.shell_rc_file_block_properties.validate | default(omit) }}"
+    unsafe_writes: "{{ pyenv_user.0.shell_rc_blockinfile_properties.unsafe_writes | default(omit) }}"
+    validate:      "{{ pyenv_user.0.shell_rc_blockinfile_properties.validate | default(omit) }}"
   with_subelements:
     - "{{ pyenv_users }}"
     - shell_rc_files
@@ -86,7 +86,7 @@
     pyenv_user.0 is mapping and
     pyenv_user.0.plugins is iterable and
     pyenv_user.0.pyenv_dest is defined and
-    pyenv_user.0.shell_rc_file_block_properties is mapping and
+    pyenv_user.0.shell_rc_blockinfile_properties is mapping and
     pyenv_user.0.username is defined and
     'pyenv-virtualenv' in pyenv_user.0.plugins
   tags:

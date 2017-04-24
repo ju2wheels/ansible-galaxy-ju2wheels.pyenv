@@ -275,7 +275,7 @@ pyenv_users:
     # If the destination paths are relative, they are converted to be relative to the user's HOME directory
     pyenv_dest: '.pyenv'
     # Shell environment autoloading configuration for blockinfile module
-    shell_rc_file_block_properties:
+    shell_rc_blockinfile_properties:
       backup: yes
       create: yes
       follow: yes

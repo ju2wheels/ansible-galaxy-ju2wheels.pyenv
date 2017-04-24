@@ -47,7 +47,7 @@ The `pyenv_user` object is a dictionary and is the main driver for all `ju2wheel
 |`username`                      |The username of the user to become when configuring `pyenv`.                                                 |
 |`plugins`                       |Array specifying `pyenv` plugins to install. Currently only supports `pyenv-virtualenv`.                     |
 |`pyenv_dest`                    |The destination where `pyenv` gets installed. If its a relative path, its relative to the user's `HOME` directory. This is used in combination with the `pyenv` role variable.|
-|`shell_rc_file_block_properties`|Dictionary of `blockinfile` parameters used when configuring shell autoloading for `pyenv` in shell rc files.|
+|`shell_rc_blockinfile_properties`|Dictionary of `blockinfile` parameters used when configuring shell autoloading for `pyenv` in shell rc files.|
 |`shell_rc_files`                |Array of shell rc file destinations in which to enable `pyenv` shell autoloading. If its a relative path, its relatvie to the user's `HOME` directory.|
 |`python_versions`               |Array of `pyenv` Python versions to be compiled and installed for the user.                                  |
 |`virtualenvs`                   |Array of `pyenv_virtualenv` objects (see below) that define virtualenvs to create.                           |
@@ -96,7 +96,7 @@ Ansible `include_role` module. For a full description and requirements of each t
         pyenv_dest: '.pyenv'
         # Shell environment autoloading configuration for blockinfile module
         # (can be empty dictionary if you dont want to customize it).
-        shell_rc_file_block_properties:
+        shell_rc_blockinfile_properties:
           backup: yes
           create: yes
           follow: yes

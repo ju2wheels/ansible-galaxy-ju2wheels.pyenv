@@ -257,8 +257,8 @@
 - name: Run the ju2wheels.pyenv role with the pyenv shell autoloading install enabled
   vars:
     pyenv_shell_env_state: present
-    # Requires pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv shell env autoloading
-    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv-virtualenv shell env autoloading
+    # Requires pyenv_dest, shell_rc_blockinfile_properties, and user per user for pyenv shell env autoloading
+    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, shell_rc_blockinfile_properties, and user per user for pyenv-virtualenv shell env autoloading
     pyenv_users: "{{ pyenv_test_users }}"
   include_role:
     name: ju2wheels.pyenv
@@ -294,8 +294,8 @@
 
 - name: Run the ju2wheels.pyenv role with the pyenv shell autoloading uninstall enabled
   vars:
-    # Requires pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv shell env autoloading
-    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, shell_rc_file_block_properties, and user per user for pyenv-virtualenv shell env autoloading
+    # Requires pyenv_dest, shell_rc_blockinfile_properties, and user per user for pyenv shell env autoloading
+    # Requires plugins containing 'pyenv-virtualenv', pyenv_dest, shell_rc_blockinfile_properties, and user per user for pyenv-virtualenv shell env autoloading
     pyenv_users: "{{ pyenv_test_users }}"
   include_role:
     name: ju2wheels.pyenv

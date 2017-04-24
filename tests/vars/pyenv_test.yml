@@ -359,7 +359,7 @@ pyenv_test_users:
     plugins: &pyenv_plugins
       - pyenv-virtualenv
     pyenv_dest: ".pyenv"
-    shell_rc_file_block_properties: &shell_rc_file_block_properties
+    shell_rc_blockinfile_properties: &shell_rc_blockinfile_properties
       backup: yes
       create: yes
       follow: yes
@@ -373,7 +373,7 @@ pyenv_test_users:
   - username: pyenv_test_user2
     plugins: *pyenv_plugins
     pyenv_dest: ".pyenv"
-    shell_rc_file_block_properties: *shell_rc_file_block_properties
+    shell_rc_blockinfile_properties: *shell_rc_blockinfile_properties
     shell_rc_files:
       - ".bashrc"
     python_versions: *python_versions
@@ -411,12 +411,12 @@ pyenv_test_users_shell_env_disabled:
   - username: pyenv_test_user1
     plugins: *pyenv_plugins
     pyenv_dest: ".pyenv"
-    shell_rc_file_block_properties: {}
+    shell_rc_blockinfile_properties: {}
     shell_rc_files: []
   - username: pyenv_test_user2
     plugins: *pyenv_plugins
     pyenv_dest: ".pyenv"
-    shell_rc_file_block_properties: {}
+    shell_rc_blockinfile_properties: {}
     shell_rc_files: []
 
 pyenv_test_virtualenv:
