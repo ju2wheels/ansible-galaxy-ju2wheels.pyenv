@@ -1,10 +1,9 @@
 ---
 
 # Remove pyenv build dependencies
-# WARNING: When you change the package_manager state to absent, please ensure to reduce the default package list as well depending on
-#          whether you are running this in a container, server, or desktop install so you dont accidentally remove packages that are
-#          required by desktop packages for example. Its recommended to reduce the package list to only uninstall the development libraries
-#          if you are unsure.
+# WARNING: Please ensure to reduce the default package list as well depending on whether you are running this in a container, server,
+#          or desktop install so you dont accidentally remove packages that are required by desktop packages for example.
+#          Its recommended to reduce the package list to only uninstall the development libraries if you are unsure (see unit tests).
 - loop_control:
     loop_var: pyenv_build_dependencies_include
   vars:
