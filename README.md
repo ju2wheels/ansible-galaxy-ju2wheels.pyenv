@@ -61,7 +61,7 @@ The `pyenv_virtualenv` object is a dictionary that links a virtualenv name to a 
 |`name`                |The name of the virtualenv.                                                                                                                                  |
 |`python_version`      |The Python version the virtualenv will use. This should be a version that is listed in the `python_versions` array of the current user's `pyenv_user` object.|
 
-For actual example implementations of these role variables see `defaults\main.yml` and the unit test vars.
+For actual example implementations of these role variables see `defaults\main.yml` and the unit test vars (its less complicated than the above makes it seem :-) ).
 
 ## Task Sets
 
