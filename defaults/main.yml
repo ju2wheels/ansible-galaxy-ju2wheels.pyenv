@@ -269,7 +269,7 @@ pyenv_repository_keys:
 
 # Per user pyenv installation, installed Python versions, plugins, virtualenvs,and shell environment autoloading configuration
 pyenv_users:
-  - username: "{{ hostvars[inventory_hostname].ansible_env.USER }}"
+  - username: "{{ hostvars[inventory_hostname].ansible_env.USER | default('root') }}"
     plugins:
       - pyenv-virtualenv
     # If the destination paths are relative, they are converted to be relative to the user's HOME directory
