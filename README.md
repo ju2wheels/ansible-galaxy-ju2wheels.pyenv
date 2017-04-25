@@ -3,9 +3,26 @@
 `ju2wheels.pyenv` is an [Ansible Galaxy](https://galaxy.ansible.com/ju2wheels/pyenv/) role for [pyenv](https://github.com/yyuu/pyenv).
 It is designed to be highly modular for use with the `include_role` module across multiple platforms.
 
+## Supported Platforms
+
+|Platform     |Versions              |
+|-------------|----------------------|
+|Alpine       |3.3, 3.4, 3.5         |
+|Amazon       |2016.09, 2017.03      |
+|Debian       |7, 8, 9               |
+|CentOS       |6, 7                  |
+|Fedora       |20, 21, 22, 23, 24, 25|
+|Linux Mint   |18                    |
+|openSUSE     |13.2                  |
+|openSUSE Leap|42.1, 42.2            |
+|Oracle Linux |6, 7                  |
+|RedHat       |6, 7                  |
+|Scientific   |6, 7                  |
+|Ubuntu       |12.04, 14.04, 16.04   |
+
 ## Requirements
 
-Other than Ansible >= 2.1, there are no other requirements to use the `ju2wheels.pyenv` role.
+Ansible >= 2.1
 
 ## Role Variables
 
