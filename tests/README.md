@@ -8,7 +8,7 @@ In order to run the unit tests you need to have the following installed on your 
 
 * ansible >= 2.1
 * docker
-* docker-py >= 1.7.0 (for the `docker_container` Ansible module)
+* docker Python module (or docker-py >= 1.7.0 for older docker versions) (for the `docker_container` Ansible module)
 
 ## Running the Unit Tests
 
