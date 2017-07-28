@@ -18,6 +18,7 @@
       - ju2wheels/ansible:2.x-alpine-3.3
       - ju2wheels/ansible:2.x-alpine-3.4     
       - ju2wheels/ansible:2.x-alpine-3.5
+      - ju2wheels/ansible:2.x-alpine-3.6
       - ju2wheels/ansible:2.x-amazonlinux-2016.09
       - ju2wheels/ansible:2.x-amazonlinux-2017.03
       - ju2wheels/ansible:2.x-centos-6
@@ -31,8 +32,8 @@
       - ju2wheels/ansible:2.x-fedora-23
       - ju2wheels/ansible:2.x-fedora-24
       - ju2wheels/ansible:2.x-fedora-25
+      - ju2wheels/ansible:2.x-fedora-26
       - ju2wheels/ansible:2.x-linuxmint-18
-      - ju2wheels/ansible:2.x-opensuse-13.2
       - ju2wheels/ansible:2.x-opensuse-42.1
       - ju2wheels/ansible:2.x-opensuse-42.2
       - ju2wheels/ansible:2.x-ubuntu-12.04
