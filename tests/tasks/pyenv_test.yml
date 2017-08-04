@@ -15,6 +15,17 @@
         - unit test
         - unit test resource
 
+    # Our Docker unit test images have had core Ansible module dependencies pre-installed. Among this is the virtualenv package which seems to be causing pyenv
+    # problems in creating virtualenvs.
+    - name: Uninstall user level virtualenv package if installed and running in Docker as it seems to be causing conflicts create virtualenvs with pyenv
+      become: true
+      shell: /root/.local/bin/pip2.7 uninstall -y virtualenv
+      ignore_errors: true
+      when: hostvars[inventory_hostname].ansible_virtualization_role == 'guest' and hostvars[inventory_hostname].ansible_virtualization_type == 'docker'
+      tags:
+        - unit test
+        - unit test resource
+
     # Test primary install and uninstall task sets with recommended defaults
     - include: pyenv_test_full.yml
 
