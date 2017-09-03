@@ -34,7 +34,6 @@
       - ju2wheels/ansible:2.x-fedora-25
       - ju2wheels/ansible:2.x-fedora-26
       - ju2wheels/ansible:2.x-linuxmint-18
-      - ju2wheels/ansible:2.x-opensuse-42.1
       - ju2wheels/ansible:2.x-opensuse-42.2
       - ju2wheels/ansible:2.x-ubuntu-12.04
       - ju2wheels/ansible:2.x-ubuntu-14.04

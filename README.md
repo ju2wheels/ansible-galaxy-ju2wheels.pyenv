@@ -14,7 +14,7 @@ It is designed to be highly modular for use with the `include_role` module acros
 |Fedora       |20, 21, 22, 23, 24, 25, 26|
 |Linux Mint   |18                        |
 |openSUSE     |13.2                      |
-|openSUSE Leap|42.1, 42.2                |
+|openSUSE Leap|42.2                      |
 |Oracle Linux |6, 7                      |
 |RedHat       |6, 7                      |
 |Scientific   |6, 7                      |
