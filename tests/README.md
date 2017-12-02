@@ -26,6 +26,17 @@ ansible-playbook docker_test.yml
 # ANSIBLE_CONFIG=/<base_path>/ju2wheels.pyenv/tests/ansible.cfg ansible-playbook /<base_path>/ju2wheels.pyenv/tests/docker_test.yml
 ```
 
+## Debugging the Unit Tests
+
+If unit tests for a particular Linux version fail, the output is sometimes hard to read. You can get a cleaner output by manually starting up the Docker instance that failed and running ansible manually.
+
+This can be done as follows:
+
+```
+# Change the Docker image as needed to the proper Linux version that unit tests are failing on
+docker run -it --env ANSIBLE_CONFIG=/etc/ansible/tests/ansible.cfg -v "<absolute_path>/ju2wheels.pyenv/:/etc/ansible" ju2wheels/ansible:2.x-ubuntu-16.04 -vvv /etc/ansible/tests/test.yml
+```
+
 ## Customizing the Unit Tests
 
 The `docker_test.yml` uses the `docker_container` Ansible module and nearly all of its options are exposed for overriding from the command
