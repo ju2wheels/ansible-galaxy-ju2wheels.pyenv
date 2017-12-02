@@ -8,7 +8,7 @@
     loop_var: pyenv_build_dependencies_include
   vars:
     pyenv_build_dependencies_state: absent
-  include: "{{ pyenv_build_dependencies_include }}"
+  include_tasks: "{{ pyenv_build_dependencies_include }}"
   with_first_found:
     - "build_dependencies/build_dependencies_{{ hostvars[inventory_hostname].ansible_distribution }}.yml"
     - "build_dependencies/build_dependencies_{{ hostvars[inventory_hostname].ansible_os_family }}.yml"

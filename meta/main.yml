@@ -1,9 +1,10 @@
 ---
 
+dependencies: []
+
 galaxy_info:
   author: Julio Lajara
   description: 'Ansible Galaxy role for pyenv (https://github.com/yyuu/pyenv).'
-  dependencies: []
   galaxy_tags:
     - development
     - python
@@ -11,7 +12,7 @@ galaxy_info:
     - virtualenv
   github_branch: master
   license: GPLv2
-  min_ansible_version: 2.1
+  min_ansible_version: 2.4
   platforms:
     - name: Alpine
       versions:

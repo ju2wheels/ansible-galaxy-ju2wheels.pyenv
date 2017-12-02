@@ -5,7 +5,7 @@
     loop_var: pyenv_git_dependencies_include
   vars:
     pyenv_git_dependencies_state: present
-  include: "{{ pyenv_git_dependencies_include }}"
+  include_tasks: "{{ pyenv_git_dependencies_include }}"
   with_first_found:
     - "git_dependencies/git_dependencies_{{ hostvars[inventory_hostname].ansible_distribution }}.yml"
     - "git_dependencies/git_dependencies_{{ hostvars[inventory_hostname].ansible_os_family }}.yml"

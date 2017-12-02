@@ -42,7 +42,7 @@
     pyenv_repository_keys: {}
   include_role:
     name: ju2wheels.pyenv
-    tasks_from: repository_install
+    tasks_from: repository_uninstall
   tags:
     - unit test
     - unit test component task disabled

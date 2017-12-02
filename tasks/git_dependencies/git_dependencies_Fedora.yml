@@ -1,7 +1,7 @@
 ---
 
-- include: git_dependencies/git_dependencies_RedHat.yml
+- include_tasks: git_dependencies/git_dependencies_RedHat.yml
   when: (hostvars[inventory_hostname].ansible_distribution_major_version | int) < 22
 
-- include: git_dependencies/git_dependencies_Fedora_dnf.yml
+- include_tasks: git_dependencies/git_dependencies_Fedora_dnf.yml
   when: (hostvars[inventory_hostname].ansible_distribution_major_version | int) >= 22

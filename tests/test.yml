@@ -4,5 +4,5 @@
   vars_files:
     - vars/pyenv_test.yml
   tasks:
-    - include: tasks/pyenv_test.yml
+    - include_tasks: tasks/pyenv_test.yml
     

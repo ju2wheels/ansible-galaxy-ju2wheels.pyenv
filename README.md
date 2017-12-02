@@ -22,7 +22,7 @@ It is designed to be highly modular for use with the `include_role` module acros
 
 ## Requirements
 
-Ansible >= 2.1
+Ansible >= 2.4
 
 ## Role Variables
 
@@ -48,12 +48,12 @@ The `pyenv_package` object is a dictionary used for pairing a list of packages w
 ### pyenv_repository
 
 The `pyenv_repository` object is a dictionary used for defining repository configuration Ansible module (`apt_repositry`, `yum_repository`, etc) parameters.
-The current key values supported are `epel` or `git`. The value for `epel` or `git` are a dictionary of `yum_repository` or `apt_repository` Ansible module parameters respectively (except for `state`).
+The current key values supported are `epel` or `git`. The value for `epel` or `git` is a dictionary of `yum_repository` or `apt_repository` Ansible module parameters respectively (except for `state`).
 
 ### pyenv_repository_key
 
 The `pyenv_repository` object is a dictionary used for defining repository key configuration Ansible module (`apt_key`, `rpm_key`, etc) parameters.
-The current key values support are `epel` or `git`. The value for `epel` or `git` are a dictionary of `rpm_key` or `apt_key` Ansible module parameters respectively (except for `state`).
+The current key values support are `epel` or `git`. The value for `epel` or `git` is a dictionary of `rpm_key` or `apt_key` Ansible module parameters respectively (except for `state`).
 
 ### pyenv_user
 

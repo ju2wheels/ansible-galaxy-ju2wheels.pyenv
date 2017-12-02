@@ -1,6 +1,6 @@
 ---
 
-- include: ../utils/users_home.yml
+- include_tasks: ../utils/users_home.yml
   
 - name: Manage per user pyenv shell environment autoloading
   become: true

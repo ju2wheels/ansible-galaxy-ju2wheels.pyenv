@@ -1,25 +1,25 @@
 ---
 
 # Remove per user shell environment configuration to autoload pyenv
-- include: pyenv_shell_env_uninstall.yml
+- include_tasks: pyenv_shell_env_uninstall.yml
 
 # Remove per user Python virtualenvs
-- include: pyenv_virtualenvs_uninstall.yml
+- include_tasks: pyenv_virtualenvs_uninstall.yml
 
 # Remove per user Python environments
-- include: pyenvs_uninstall.yml  
+- include_tasks: pyenvs_uninstall.yml
 
 # Remove per user pyenv-virtualenv module
-- include: pyenv_virtualenv_uninstall.yml
+- include_tasks: pyenv_virtualenv_uninstall.yml
 
 # Remove per user pyenv
-- include: pyenv_uninstall.yml
+- include_tasks: pyenv_uninstall.yml
 
 # Remove pyenv git dependencies
-- include: git_dependencies_uninstall.yml
+- include_tasks: git_dependencies_uninstall.yml
 
 # Remove pyenv build dependencies
-- include: build_dependencies_uninstall.yml
+- include_tasks: build_dependencies_uninstall.yml
 
 # Remove any necessary repositories used to install recent version of GIT
-- include: repository_uninstall.yml
+- include_tasks: repository_uninstall.yml

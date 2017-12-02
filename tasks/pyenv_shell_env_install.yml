@@ -3,4 +3,4 @@
 # Install per user shell environment configuration to autoload pyenv
 - vars:
     pyenv_shell_env_state: present
-  include: pyenv/pyenv_shell_env.yml
+  include_tasks: pyenv/pyenv_shell_env.yml

@@ -1,6 +1,6 @@
 ---
 
-- include: utils/users_home.yml
+- include_tasks: utils/users_home.yml
 
 - name: Uninstall per user pyenv-virtualenv module
   become: true

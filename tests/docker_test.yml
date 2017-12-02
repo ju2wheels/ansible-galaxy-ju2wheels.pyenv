@@ -13,6 +13,7 @@
       ANSIBLE_CONFIG:    /ansible-playbook/tests/ansible.cfg
       ANSIBLE_INVENTORY: /ansible-playbook/tests/inventory
       ANSIBLE_NOCOLOR:   1
+      no_proxy: '*'
     docker_container_hostname:       ju2wheels_pyenv_test
     docker_container_images:
       - ju2wheels/ansible:2.x-alpine-3.3
