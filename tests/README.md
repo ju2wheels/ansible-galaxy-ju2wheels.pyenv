@@ -34,7 +34,7 @@ This can be done as follows:
 
 ```
 # Change the Docker image as needed to the proper Linux version that unit tests are failing on
-docker run -it --env ANSIBLE_CONFIG=/etc/ansible/tests/ansible.cfg -v "<absolute_path>/ju2wheels.pyenv/:/etc/ansible" ju2wheels/ansible:2.x-ubuntu-16.04 -vvv /etc/ansible/tests/test.yml
+docker run -it --env ANSIBLE_CONFIG=/etc/ansible/tests/ansible.cfg -v "<absolute_path>/ju2wheels.pyenv/:/etc/ansible" ju2wheels/ansible:2.x-ubuntu-16.04 --extra-vars '{"ansible_become": false}' --skip-tags 'unit test full' -vvv /etc/ansible/tests/test.yml
 ```
 
 ## Customizing the Unit Tests
