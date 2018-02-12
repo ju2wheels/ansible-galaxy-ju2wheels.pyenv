@@ -34,7 +34,7 @@ This can be done as follows:
 
 ```
 # Change the Docker image as needed to the proper Linux version that unit tests are failing on
-docker run -it --env ANSIBLE_CONFIG=/etc/ansible/tests/ansible.cfg -v "<absolute_path>/ju2wheels.pyenv/:/etc/ansible" ju2wheels/ansible:2.x-ubuntu-16.04 --extra-vars '{"ansible_become": false}' --skip-tags 'unit test full' -vvv /etc/ansible/tests/test.yml
+docker run -it --env ANSIBLE_CONFIG=/etc/ansible/tests/ansible.cfg -v "<absolute_path>/ju2wheels.pyenv/:/etc/ansible" ju2wheels/ansible:2.x-ubuntu-16.04 --skip-tags 'unit test full' -vvv /etc/ansible/tests/test.yml
 ```
 
 ## Customizing the Unit Tests
@@ -52,9 +52,8 @@ If you are passing more than one value, it is recommended to use JSON format for
 In addition to `docker_container` parameters, you can also define the `docker_container_images` array to control which `docker` images the unit tests are run against.
 
 If you want to control the behavior of the Ansible command thats actually run inside the container (since we are using Ansible to run Ansible in the `docker` container),
-you can override the values for `docker_container_command` and `docker_container_env`. Note that `docker_container_command` must always disable the
-`ansible_become` parameter via `extra-vars` as well as having the path to the `test.yml` playbook if you override the value to customize variables in
-`vars/pyenv_test.yml`.
+you can override the values for `docker_container_command` and `docker_container_env`. Note that `docker_container_command` must always have the path to the `test.yml` playbook
+if you override the value to customize variables in `vars/pyenv_test.yml`.
 
 ## Unit Testing Docker Images
 

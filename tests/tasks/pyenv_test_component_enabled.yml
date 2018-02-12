@@ -22,7 +22,7 @@
   tags:
     - unit test
     - unit test component task enabled
-        - unit test repository
+    - unit test repository
 
 - assert:
     msg: Repository configuration install is successful for EPEL and GIT repositories on supported distros
