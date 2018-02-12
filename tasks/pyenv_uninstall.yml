@@ -1,15 +1,12 @@
 ---
 
-- include_tasks: utils/users_home.yml
-
 - name: Uninstall per user pyenv
   become: true
   become_user: "{{ pyenv_user.username }}"
   loop_control:
     loop_var: pyenv_user
-  file:
-    # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory
-    dest: "{{ (pyenv_user.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.username] is not defined) | ternary(pyenv_user.pyenv_dest, [pyenv_users_home[pyenv_user.username], pyenv_user.pyenv_dest] | join('/')) }}"
+  pyenv:
+    dest: "{{ pyenv_user.pyenv_dest }}"
     state: absent
   register: pyenv_pyenv_status
   with_items: "{{ pyenv_users }}"

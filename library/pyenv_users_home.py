@@ -15,19 +15,17 @@ author: Julio Lajara (@ju2wheels)
 description:
   - Retrieves the C(HOME) path for the specified users.
 module: pyenv_users_home
-
-short_description: Retrieves the C(HOME) path for the specified users.
-requirements:
-  - gentent (Linux)
-  - dscl (MacOSX)
-version_added: "2.4"
-
 options:
   users:
     default: []
     description: The users for which to retrieve the C(HOME) path. Defaults to current user.
     required: false
     type: list of str
+short_description: Retrieves the C(HOME) path for the specified users.
+requirements:
+  - gentent (Linux)
+  - dscl (MacOSX)
+version_added: "2.4"
 '''
 
 EXAMPLES = '''

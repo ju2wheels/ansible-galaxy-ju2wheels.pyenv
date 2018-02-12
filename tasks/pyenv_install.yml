@@ -1,16 +1,13 @@
 ---
 
-- include_tasks: utils/users_home.yml
-  
 - name: Install per user pyenv
   become: true
   become_user: "{{ pyenv_user.username }}"
   loop_control:
     loop_var: pyenv_user
-  git:
+  pyenv:
     accept_hostkey:   "{{ pyenv.accept_hostkey | default(omit) }}"
-    # Use the destination as is if its absolute or the user's HOME directory is not known, otherwise append the path to the user's HOME directory
-    dest:             "{{ (pyenv_user.pyenv_dest | is_abs or pyenv_users_home[pyenv_user.username] is not defined) | ternary(pyenv_user.pyenv_dest, [pyenv_users_home[pyenv_user.username], pyenv_user.pyenv_dest] | join('/')) }}"
+    dest:             "{{ pyenv_user.pyenv_dest }}"
     executable:       "{{ pyenv.executable | default(omit) }}"
     force:            "{{ pyenv.force | default(omit) }}"
     key_file:         "{{ pyenv.key_file | default(omit) }}"
@@ -18,6 +15,7 @@
     remote:           "{{ pyenv.remote | default(omit) }}"
     repo:             "{{ pyenv.repo }}"
     ssh_opts:         "{{ pyenv.ssh_opts | default(omit) }}"
+    state:            present
     track_submodules: "{{ pyenv.track_submodules | default(omit) }}"
     umask:            "{{ pyenv.umask | default(omit) }}"
     update:           "{{ pyenv['update'] | default(omit) }}" # update is also a hash function so we need to index it instead
